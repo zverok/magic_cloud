@@ -1,6 +1,6 @@
 # encoding: utf-8
 #require 'bitarray' - it is memory-effective, yet slower than just plain old Array
-$stats = {rect_no: 0, px_yes: 0, px_prev_yes: 0, px_no: 0}
+$stats = Hash.new{|h,k| h[k] = 0}
   
 class MagicCloud
   # Bitmask-based collision board
@@ -49,8 +49,16 @@ class MagicCloud
     def collides?(tag)
       return false if rects.empty? # nothing on board
       
-      # first find which of placed sprites rectangles tag intersects
       rect = tag.rect
+
+      if rects.any?{|r| r.criss_cross?(rect)}
+        $stats[:criss_cross] += 1 
+        # no point to try drawing criss-crossed words
+        # even if they will not collide pixel-per-pixel
+        return true 
+      end
+
+      # then find which of placed sprites rectangles tag intersects
       intersections = rects.map{|r| r.intersect(rect)}
       
       if intersections.compact.empty?

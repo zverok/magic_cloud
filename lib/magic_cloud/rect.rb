@@ -18,6 +18,17 @@ class MagicCloud
     def adjust(other)
       dup.tap{|d| d.adjust!(other)}
     end
+    
+    def criss_cross?(other)
+      # case 1: this one is horizontal:
+      # overlaps other by x, to right and left, and goes inside it by y
+      x0 < other.x0 && x1 > other.x1 &&   
+        y0 > other.y0 && y1 < other.y1 || 
+      # case 2: this one is vertical:
+      # overlaps other by y, to top and bottom, and goes inside it by x
+      y0 < other.y0 && y1 > other.y1 &&   
+        x0 > other.x0 && x1 < other.x1
+    end
 
     def intersect(other)
       ix0 = [x0, other.x0].max
