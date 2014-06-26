@@ -1,5 +1,6 @@
 # encoding: utf-8
-require 'bitarray'
+#require 'bitarray' - it is memory-effective, yet slower than just plain old Array
+$stats = {rect_no: 0, px_yes: 0, px_prev_yes: 0, px_no: 0}
   
 class MagicCloud
   # Bitmask-based collision board
@@ -7,68 +8,112 @@ class MagicCloud
     class Sprite
       def initialize(width, height)
         @width, @height = width, height
-        @data = BitArray.new(height*width)
+        @data = [0] * height*width # BitArray.new(height*width)
       end
 
       attr_reader :width, :height, :data
       
       def add_pixel(x, y, px)
-        val = px.zero? ? 0 : 1
-        idx = width * y + x
-        
-        data[idx] |= val
+        data[width * y + x] = 1 unless px == 0
       end
 
       def at(x, y)
-        (x >= width || y >= height) and fail("#{x}:#{y} outside #{width} x #{height}")
+        #(x >= width || y >= height) and fail("#{x}:#{y} outside #{width} x #{height}")
         
-        data[y * width + x]
+        data[y * width + x] == 1
       end
     end
 
     def initialize(width, height)
       @width, @height = width, height
-      @board = BitArray.new(width * height)
+      @board = [0] * height*width # BitArray.new(width * height)
+      @rects = []
     end
     
-    attr_reader :board, :width, :height
+    attr_reader :board, :width, :height, :rects
 
     def sprite(w, h)
       Sprite.new(w, h)
     end
 
     def at(x, y)
-      (x >= width || y >= height) and fail("#{x}:#{y} outside #{width} x #{height}")
+      #(x >= width || y >= height) and fail("#{x}:#{y} outside #{width} x #{height}")
       
-      board[y * width + x]
+      @board[y * width + x] == 1
     end
     
-    def put(x, y, val)
-      board[y * width + x] = val
+    def set(x, y)
+      board[y * width + x] = 1
     end
 
     def collides?(tag)
-      tag.height.times do |dy|
-        tag.width.times do |dx|
-          px = tag.sprite.at(dx, dy)
-          if !px.zero? && tag.left + dx < width && tag.top + dy < height && !at(tag.left + dx, tag.top + dy).zero?
-            return true 
-          end
+      return false if rects.empty? # nothing on board
+      
+      # first find which of placed sprites rectangles tag intersects
+      rect = tag.rect
+      intersections = rects.map{|r| r.intersect(rect)}
+      
+      if intersections.compact.empty?
+        $stats[:rect_no] += 1 
+        puts "#{tag.show} no intersections: #{rect} × #{rects.map(&:inspect).join('; ')}"
+        # no need to further check: this tag is not inside any others' rectangle
+        return false
+      end
+      
+       # most possible that we are still collide with this word
+      if tag.prev_intersected_idx && (prev = intersections[tag.prev_intersected_idx])
+        if collides_inside?(tag, prev)
+          $stats[:px_prev_yes] += 1
+          return true
         end
       end
       
+      # only then check points inside intersected rectangles
+      intersections.each_with_index do |intersection, idx|
+        next unless intersection
+        next if idx == tag.prev_intersected_idx # already checked it
+        
+        if collides_inside?(tag, intersection)
+          $stats[:px_yes] += 1
+          tag.prev_intersected_idx = idx
+          return true
+        end
+      end
+      
+      $stats[:px_no] += 1
+      return false
+
+      #tag.height.times do |dy|
+        #tag.width.times do |dx|
+          #if tag.sprite.at(dx, dy) && 
+            #(tag.left + dx < width && tag.top + dy < height) && 
+            #at(tag.left + dx, tag.top + dy)
+            
+            #return true 
+          #end
+        #end
+      #end
+    end
+    
+    def collides_inside?(tag, rect)
+      (rect.x0...rect.x1).each do |x|
+        (rect.y0...rect.y1).each do |y|
+          dx = x - tag.left
+          dy = y - tag.top
+          return true if tag.sprite.at(dx, dy) && at(x, y)
+        end
+      end
       return false
     end
     
     def add(tag)
       tag.height.times do |dy|
         tag.width.times do |dx|
-          px = tag.sprite.at(dx, dy)
-          if !px.zero? && tag.left + dx < width && tag.top + dy < height
-            put(tag.left+dx, tag.top+dy, px) 
-          end
+          set(tag.left+dx, tag.top+dy) if tag.sprite.at(dx, dy) 
         end
       end
+      
+      rects << tag.rect
     end
   end
 end

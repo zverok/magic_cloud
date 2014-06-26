@@ -3,13 +3,14 @@ class MagicCloud
   class Spriter
     include Magick
 
+    CLOUD_RADIANS = Math::PI / 180
+
     # so it was in d3.layouts.cloud... don't know
     CW = 1 << 11
     CH = 1 << 11
-    
+
     def initialize(cloud)
       @cloud = cloud
-      @canvas = Image.new(CW, CH){|i| i.background_color =  'transparent'}
     end
     
     def make_draw
@@ -27,12 +28,12 @@ class MagicCloud
       maxh = 0
       last_idx = 0
       
-      #reset_canvas!
+      reset_canvas!
       
       tags.each_with_index do |tag, idx|
         draw = make_draw
+
         
-        #c.font = d.style + " " + d.weight + " " + ((d.size + 1) / ratio).to_i + "px " + d.font;
         draw.pointsize = tag.size
         
         metrics = draw.get_type_metrics(tag.text + 'm')
@@ -73,6 +74,12 @@ class MagicCloud
         draw.translate(x + (w >> 1), y + (h >> 1))
         draw.rotate(tag.rotate) if tag.rotate 
 
+        padding = 1 # tag.padding
+        if padding > 0
+          draw.stroke_width padding*2
+          draw.stroke_color 'red'
+        end
+
         draw.text(0, 0, tag.text)
 
         draw.draw(canvas)
@@ -83,12 +90,13 @@ class MagicCloud
         tag.yoff = y
         x += w
       end
+      #canvas.write('tmp/sprites.png')
       
       load_sprites(tags[last_idx..-1])
     end
     
     def load_sprites(tags)
-      canvas.write('tmp/test.png')
+      #canvas.write('tmp/test.png')
       pixels = canvas.export_pixels(0, 0, CW, CH, 'RGBA')
       
       tags.each do |tag|
@@ -136,7 +144,7 @@ class MagicCloud
     attr_reader :canvas
     
     def reset_canvas!
-      #c.clearRect(0, 0, CW, CH)
+      @canvas = Image.new(CW, CH){|i| i.background_color =  'transparent'}
     end
   end
 end
