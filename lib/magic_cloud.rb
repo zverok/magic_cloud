@@ -1,4 +1,6 @@
 # encoding: utf-8
+require 'RMagick'
+
 class MagicCloud
   DEFAULT_WIDTH = 256
   DEFAULT_HEIGHT = 256
