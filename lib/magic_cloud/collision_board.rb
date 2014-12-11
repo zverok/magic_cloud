@@ -47,6 +47,8 @@ class MagicCloud
     end
 
     def collides?(tag)
+      $stats[:collide_total] += 1
+      
       return false if rects.empty? # nothing on board
       
       rect = tag.rect
@@ -90,17 +92,6 @@ class MagicCloud
       
       $stats[:px_no] += 1
       return false
-
-      #tag.height.times do |dy|
-        #tag.width.times do |dx|
-          #if tag.sprite.at(dx, dy) && 
-            #(tag.left + dx < width && tag.top + dy < height) && 
-            #at(tag.left + dx, tag.top + dy)
-            
-            #return true 
-          #end
-        #end
-      #end
     end
     
     def collides_inside?(tag, rect)
