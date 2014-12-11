@@ -14,6 +14,7 @@ class MagicCloud
       
       #@rotate = (((rand * 6) - 3) * 30).round
       @rotate = (rand * 2).to_i * 90
+      @spiral = rectangular_spiral
     end
     
     attr_reader :text, :size, :cloud
@@ -63,6 +64,11 @@ class MagicCloud
       # each coord is like - from center, in random direction, random shift, allowing to place it immediately
       start_x = (cloud.width/2 + (cloud.width - width)*(rand-0.5)/2).to_i
       start_y = (cloud.height/2 + (cloud.height - height)*(rand-0.5)/2).to_i
+
+      # other possible strategy: start from center
+      # produces more sparse cloud, takes more time
+      #start_x = (cloud.width/2 + rand(200) - 100).to_i
+      #start_y = (cloud.height/2 + rand(200) - 100).to_i
       
       max_delta = Math.sqrt(cloud.width**2 + cloud.height**2)
       dt = rand < 0.5 ? 1 : -1 # direction of spiral, I assume
@@ -73,7 +79,7 @@ class MagicCloud
       # looking for the place for this word, moving in spirals from center 
       while true
         t += dt
-        dx, dy = archimedean_spiral(t)
+        dx, dy = @spiral.call(t) #archimedean_spiral(t)
         
         break if [dx, dy].map(&:abs).min > max_delta # no chances to find place :(
 
@@ -92,19 +98,46 @@ class MagicCloud
         end
       end
       
-      #puts "Place not found: #{show} after #{t} steps, started at #{start_x}:#{start_y}, last step: #{dx}:#{dy}"
+      #p "Place not found: #{show} after #{t} steps, started at #{start_x}:#{start_y}, last step: #{dx}:#{dy}"
       
       false
     end
     
     def show
-        "{%s: at %i:%i - %i×%i}" % [text, x, y, width, height]
+      '{%s: at %i:%i - %i×%i}' % [text, x, y, width, height]
     end
 
-    def archimedean_spiral(t)
-      @e ||= cloud.width / cloud.height
-      t1 = t * size * 0.01
-      [@e * t1 * Math.cos(t1), t1 * Math.sin(t1)].map(&:round)
+    def archimedean_spiral #(t)
+      e = cloud.width / cloud.height
+      ->(t){
+        t1 = t * size * 0.01
+        [
+          e * t1 * Math.cos(t1), 
+          t1 * Math.sin(t1)
+        ].map(&:round)
+      }
+    end
+    
+    def rectangular_spiral
+      dy = 4 * size * 0.1
+      dx = dy * cloud.width / cloud.height
+      x = 0
+      y = 0
+      ->(t){
+        sign = t < 0 ? -1 : 1;
+        # zverok: this is original comment & code from d3.layout.cloud.js
+        # Looks too witty for me.
+        #
+        # See triangular numbers: T_n = n * (n + 1) / 2.
+        case (Math.sqrt(1 + 4 * sign * t) - sign).to_i & 3
+        when 0 then x += dx
+        when 1 then y += dy
+        when 2 then x -= dx
+        else        y -= dy
+        end
+        
+        [x, y].map(&:round)
+      }
     end
     
     attr_reader :left, :top, :right, :bottom, :width, :height, :rect

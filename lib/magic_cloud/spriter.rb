@@ -1,5 +1,9 @@
 # encoding: utf-8
 class MagicCloud
+  # zverok: faithfull, this entire class is still straighforward port of 
+  # d3.layout.cloud code, so, I'm not very confident with it.
+  # Yet what I know: it DOES work, and it is NOT a major slowdown of entire
+  # algo. So I'm just not touching it at all.
   class Spriter
     include Magick
 
@@ -33,10 +37,9 @@ class MagicCloud
       tags.each_with_index do |tag, idx|
         draw = make_draw
 
-        
         draw.pointsize = tag.size
         
-        metrics = draw.get_type_metrics(tag.text + 'm')
+        metrics = draw.get_type_metrics('"' + tag.text + 'm"')
         w = metrics.width
         h = metrics.height
 
