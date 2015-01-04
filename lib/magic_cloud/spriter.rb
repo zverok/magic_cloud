@@ -4,7 +4,7 @@ require_relative './bit_matrix'
 module MagicCloud
   module Spriter
     class Sprite < BitMatrix
-      def Sprite.extract(rect, pixels)
+      def self.extract(rect, pixels)
         sprite = new(rect.width, rect.height)
         
         (0...rect.height).each do |y|
@@ -18,7 +18,7 @@ module MagicCloud
       end
     end
     
-    def Spriter.make_sprites!(shapes)
+    def self.make_sprites!(shapes)
       shapes.each do |shape|
         canvas = Canvas.new(1024,1024)
         rect = shape.draw(canvas, color: 'red')

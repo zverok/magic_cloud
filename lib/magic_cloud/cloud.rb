@@ -11,13 +11,18 @@ module MagicCloud
     def initialize(words, options = {})
       @words = words.sort_by(&:last).reverse
       @options = options
-      @scaler = make_scaler(words, options[:scale] || :log) # linear, square, no
+      @scaler = make_scaler(words, options[:scale] || :log)
       @rotator = make_rotator(options[:rotate] || :square)
       @palette = make_palette(options[:palette] || :default)
     end
     
     PALETTES = {
-      color20: %w[#1f77b4 #aec7e8 #ff7f0e #ffbb78 #2ca02c #98df8a #d62728 #ff9896 #9467bd #c5b0d5 #8c564b #c49c94 #e377c2 #f7b6d2 #7f7f7f #c7c7c7 #bcbd22 #dbdb8d #17becf #9edae5]
+      color20: %w[
+        #1f77b4 #aec7e8 #ff7f0e #ffbb78 #2ca02c 
+        #98df8a #d62728 #ff9896 #9467bd #c5b0d5 
+        #8c564b #c49c94 #e377c2 #f7b6d2 #7f7f7f 
+        #c7c7c7 #bcbd22 #dbdb8d #17becf #9edae5
+      ]
     }
     
     def draw(width, height)
@@ -58,7 +63,9 @@ module MagicCloud
     end
     
     def make_const_palette(sym)
-      palette = PALETTES[sym] or fail(ArgumentError, "Unknown palette: #{sym.inspect}")
+      palette = PALETTES[sym] or 
+        fail(ArgumentError, "Unknown palette: #{sym.inspect}")
+      
       ->(word, index){palette[index % palette.size]}
     end
     
@@ -84,18 +91,19 @@ module MagicCloud
     FONT_MAX = 100
     
     def make_scaler(words, algo)
-      norm = case algo
-      when :no
-        return ->(word, size, index){size} # no normalization, treat tag weights as font size
-      when :linear
-        ->(x){x}
-      when :log
-        ->(x){Math.log(x) / Math.log(10)}
-      when :sqrt
-        ->(x){Math.sqrt(x)}
-      else
-        fail ArgumentError, "Unknown scaling algo: #{algo.inspect}"
-      end
+      norm = 
+        case algo
+        when :no
+          return ->(word, size, index){size} # no normalization, treat tag weights as font size
+        when :linear
+          ->(x){x}
+        when :log
+          ->(x){Math.log(x) / Math.log(10)}
+        when :sqrt
+          ->(x){Math.sqrt(x)}
+        else
+          fail ArgumentError, "Unknown scaling algo: #{algo.inspect}"
+        end
       
       smin = norm.call(words.map(&:last).min)
       smax = norm.call(words.map(&:last).max)
@@ -103,7 +111,7 @@ module MagicCloud
       
       ->(word, size, index){
         ssize = norm.call(size)
-        ( (ssize - smin).to_f*koeff + FONT_MIN ).to_i
+        ((ssize - smin).to_f*koeff + FONT_MIN).to_i
       }
     end
   end

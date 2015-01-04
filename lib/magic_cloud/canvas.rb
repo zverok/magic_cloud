@@ -26,7 +26,10 @@ module MagicCloud
       draw.text_align(Magick::CenterAlign)
 
       metrics = draw.get_type_metrics('"' + text + 'm"')
-      w, h = rotated_metrics(metrics.width, metrics.height, options[:rotate] || 0)
+      w, h = rotated_metrics(
+        metrics.width, 
+        metrics.height, 
+        options[:rotate] || 0)
       
       draw.translate(w/2, h/2)
       draw.rotate(options[:rotate] || 0)
@@ -52,8 +55,12 @@ module MagicCloud
       radians = degrees * Math::PI / 180
 
       # FIXME: not too clear, just straightforward from d3.cloud
-      sr = Math.sin(radians); cr = Math.cos(radians)
-      wcr = w * cr; wsr = w * sr; hcr = h * cr; hsr = h * sr
+      sr = Math.sin(radians)
+      cr = Math.cos(radians)
+      wcr = w * cr
+      wsr = w * sr
+      hcr = h * cr
+      hsr = h * sr
 
       w = [(wcr + hsr).abs, (wcr - hsr).abs].max.to_i
       h = [(wsr + hcr).abs, (wsr - hcr).abs].max.to_i

@@ -15,7 +15,7 @@ module MagicCloud
     
     # returns true/false
     # FIXME: maybe #put should also accept true/false
-    def at(x,y)
+    def at(x, y)
       !bits[y][x].zero?
     end
     
@@ -29,7 +29,7 @@ module MagicCloud
     
     def dump
       (0...height).map{|y|
-        (0...width).map{|x| at(x,y).zero? ? ' ' : 'x'}.join
+        (0...width).map{|x| at(x,y) ? ' ' : 'x'}.join
       }.join("\n")
     end
   end

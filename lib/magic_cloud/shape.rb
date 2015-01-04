@@ -12,8 +12,11 @@ module MagicCloud
     end
     
     def left; x end
+    
     def right; x+width end
+    
     def top; y end
+    
     def bottom; y+height end
     
     def rect
@@ -22,7 +25,7 @@ module MagicCloud
     
     # returns rect
     def draw(canvas)
-      rescue NotImplementedError
+      fail NotImplementedError
     end
   end
 end

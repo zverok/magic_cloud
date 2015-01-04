@@ -43,14 +43,15 @@ module MagicCloud
     
     def find_place(shape, bounds)
       # first, place it randomly
-      # each coord is like - from center, in random direction, random shift, allowing to place it immediately
+      # each coord is like - from center, in random direction, 
+      # random shift, allowing to place it immediately
       start_x = (width/2 + (width - shape.width)*(rand-0.5)/2).to_i
       start_y = (height/2 + (height - shape.height)*(rand-0.5)/2).to_i
 
       # other possible strategy: start from center
       # produces more sparse cloud, takes more time
-      #start_x = (cloud.width/2 + rand(200) - 100).to_i
-      #start_y = (cloud.height/2 + rand(200) - 100).to_i
+      # start_x = (cloud.width/2 + rand(200) - 100).to_i
+      # start_y = (cloud.height/2 + rand(200) - 100).to_i
       
       max_delta = Math.sqrt(width**2 + height**2)
       dt = rand < 0.5 ? 1 : -1 # direction of spiral
@@ -65,7 +66,7 @@ module MagicCloud
       # FIXME: first check, if sprite can fit inside board
 
       # looking for the place for this word, moving in spirals from center 
-      while true
+      loop do
         t += dt
         step += 1
         dx, dy = spiral.call(t)
@@ -95,7 +96,7 @@ module MagicCloud
     
     private
     
-    # FIXME very much
+    # FIXME: fixme very much
     def make_spiral(step)
       rectangular_spiral(step)
     end
@@ -104,6 +105,7 @@ module MagicCloud
       e = width / height
       ->(t){
         t1 = t * size * 0.01
+        
         [
           e * t1 * Math.cos(t1), 
           t1 * Math.sin(t1)
@@ -117,7 +119,8 @@ module MagicCloud
       x = 0
       y = 0
       ->(t){
-        sign = t < 0 ? -1 : 1;
+        sign = t < 0 ? -1 : 1
+        
         # zverok: this is original comment & code from d3.layout.cloud.js
         # Looks too witty for me.
         #
