@@ -99,6 +99,7 @@ cloud = MagicCloud.new(words, width, height, palette: palette, rotate: rotate)
   * `:none` - all words are horizontal (looks boooring)
   * `:free` - any word rotation angle, looks cool, but not very readable
     and slower to layout
+  * any lambda, accepting `(tag, index)` and returning 0..360
   * any object, responding to `rotate(tag, index)` and returning 0..360
 
 Services

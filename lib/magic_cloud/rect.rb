@@ -1,6 +1,14 @@
 # encoding: utf-8
-class MagicCloud
+module MagicCloud
   class Rect < Struct.new(:x0, :y0, :x1, :y1)
+    def width
+      x1-x0
+    end
+    
+    def height
+      y1-y0
+    end
+  
     def collide?(other)
       x1 > other.x0 &&
           x0 < other.x1 &&
