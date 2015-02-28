@@ -43,104 +43,110 @@ module MagicCloud
 
     private
 
-    def find_place(shape, bounds)
-      # first, place it randomly
-      # each coord is like - from center, in random direction,
-      # random shift, allowing to place it immediately
-      start_x = (width/2 + (width - shape.width)*(rand-0.5)/2).to_i
-      start_y = (height/2 + (height - shape.height)*(rand-0.5)/2).to_i
+    class PlaceNotFound < RuntimeError
+    end
 
-      # other possible strategy: start from center
-      # produces more sparse cloud, takes more time
-      # start_x = (cloud.width/2 + rand(200) - 100).to_i
-      # start_y = (cloud.height/2 + rand(200) - 100).to_i
+    # Incapsulating place lookup process
+    class Place
+      def initalize(layouter, shape)
+        @layouter, @shape = layouter, shape
 
-      max_delta = Math.sqrt(width**2 + height**2)
-      dt = rand < 0.5 ? 1 : -1 # direction of spiral
-      t = -dt
+        @start_x = (@layouter.width/2 + (@layouter.width - @shape.width) * (rand-0.5)/2).to_i
+        @start_y = (@layouter.height/2 + (@layouter.height - @shape.height) * (rand-0.5)/2).to_i
 
+        @max_delta = Math.sqrt(@layouter.width**2 + @layouter.height**2)
+        @dt = rand < 0.5 ? 1 : -1 # direction of spiral
+        @t = -dt
+        @spiral = make_spiral(@shape.size)
+      end
+
+      def next!
+        @t += @dt
+        dx, dy = @spiral.call(t)
+
+        # no chances to find place
+        fail PlaceNotFound if [dx, dy].map(&:abs).min > @max_delta
+
+        @shape.x = @start_x + dx
+        @shape.y = @start_y + dy
+      end
+
+      def ready?
+        !out_of_board? && !@layouter.board.collides?(shape)
+      end
+
+      private
+
+      def out_of_board?
+        @shape.left < 0 || @shape.top < 0 ||
+          @shape.right > @layouter.width || @shape.bottom > @layouter.height
+      end
+
+      # FIXME: fixme very much
+      def make_spiral(step)
+        rectangular_spiral(step)
+      end
+
+      def archimedean_spiral(size)
+        e = width / height
+        ->(t){
+          t1 = t * size * 0.01
+
+          [
+            e * t1 * Math.cos(t1),
+            t1 * Math.sin(t1)
+          ].map(&:round)
+        }
+      end
+
+      def rectangular_spiral(size)
+        dy = 4 * size * 0.1
+        dx = dy * width / height
+        x = 0
+        y = 0
+        ->(t){
+          sign = t < 0 ? -1 : 1
+
+          # zverok: this is original comment & code from d3.layout.cloud.js
+          # Looks too witty for me.
+          #
+          # See triangular numbers: T_n = n * (n + 1) / 2.
+          case (Math.sqrt(1 + 4 * sign * t) - sign).to_i & 3
+          when 0 then x += dx
+          when 1 then y += dy
+          when 2 then x -= dx
+          else        y -= dy
+          end
+
+          [x, y].map(&:round)
+        }
+      end
+    end
+
+    def find_place(shape)
+      place = Place.new(self, shape)
       start = Time.now
-
-      spiral = make_spiral(shape.size)
-
-      step = 0
-
-      # FIXME: first check, if sprite can fit inside board
-
-      # looking for the place for this word, moving in spirals from center
+      steps = 0
+      
       loop do
-        t += dt
-        step += 1
-        dx, dy = spiral.call(t)
+        steps += 1
+        place.next!
 
-        # no chances to find place :(
-        break if [dx, dy].map(&:abs).min > max_delta
-
-        shape.x = start_x + dx
-        shape.y = start_y + dy
-
-        # out of cloud rectangle, let's try another position
-        next if shape.left < 0 || shape.top < 0 ||
-                shape.right > width || shape.bottom > height
-
-        # FIXME: simplify condition!
-        next unless !bounds ||
-                    !shape.rect.collide?(bounds) ||
-                    !board.collides?(shape)
+        next unless place.ready?
 
         board.add(shape)
         Debug.logger.info "Place for #{shape.inspect} found " \
-          "in #{step} steps (#{Time.now-start} sec)"
+          "in #{steps} steps (#{Time.now-start} sec)"
 
-        return true
+        break
       end
 
+      true
+    rescue PlaceNotFound
       Debug.logger.warn "No place for #{shape.inspect} " \
         "in #{step} steps (#{Time.now-start} sec)"
 
       false
-    end
-
-    private
-
-    # FIXME: fixme very much
-    def make_spiral(step)
-      rectangular_spiral(step)
-    end
-
-    def archimedean_spiral(size)
-      e = width / height
-      ->(t){
-        t1 = t * size * 0.01
-
-        [
-          e * t1 * Math.cos(t1),
-          t1 * Math.sin(t1)
-        ].map(&:round)
-      }
-    end
-
-    def rectangular_spiral(size)
-      dy = 4 * size * 0.1
-      dx = dy * width / height
-      x = 0
-      y = 0
-      ->(t){
-        sign = t < 0 ? -1 : 1
-
-        # zverok: this is original comment & code from d3.layout.cloud.js
-        # Looks too witty for me.
-        #
-        # See triangular numbers: T_n = n * (n + 1) / 2.
-        case (Math.sqrt(1 + 4 * sign * t) - sign).to_i & 3
-        when 0 then x += dx
-        when 1 then y += dy
-        when 2 then x -= dx
-        else        y -= dy
-        end
-
-        [x, y].map(&:round)
-      }
     end
   end
 end
