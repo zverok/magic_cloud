@@ -99,8 +99,14 @@ cloud = MagicCloud.new(words, width, height, palette: palette, rotate: rotate)
   * `:none` - all words are horizontal (looks boooring)
   * `:free` - any word rotation angle, looks cool, but not very readable
     and slower to layout
+  * `[array, of, angles]` - each of possible angle should be number 0..360
   * any lambda, accepting `(tag, index)` and returning 0..360
   * any object, responding to `rotate(tag, index)` and returning 0..360
+* Scale - how word sizes would be scaled to fit into (FONT_MIN..FONT_MAX) range:
+  * `:no` - no scaling, all word sizes are treated as is;
+  * `:linear` - linear scaling (default);
+  * `:log` - logarithmic scaling;
+  * `:sqrt` - square root scaling.
 
 Services
 --------

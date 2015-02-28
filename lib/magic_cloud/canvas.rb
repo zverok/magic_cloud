@@ -2,22 +2,26 @@
 require 'RMagick'
 
 module MagicCloud
+  # Thin wrapper around RMagick, incapsulating ALL the real drawing.
+  # As it's only class that "knows" about underlying graphics library,
+  # it should be possible to replace it with another canvas with same
+  # interface, not using RMagick.
   class Canvas
     def initialize(w, h, back = 'transparent')
-      @width, @height = w,h
+      @width, @height = w, h
       @internal = Magick::Image.new(w, h){|i| i.background_color =  back}
     end
-    
+
     attr_reader :internal, :width, :height
-    
+
     RADIANS = Math::PI / 180
-    
+
     def draw_text(text, options = {})
       draw = Magick::Draw.new
-      
+
       draw.font_family = 'Impact'
       draw.font_weight = Magick::NormalWeight
-      
+
       draw.translate(options[:x] || 0, options[:y] || 0)
       draw.pointsize = options[:font_size]
       draw.fill_color(options[:color])
@@ -27,31 +31,33 @@ module MagicCloud
 
       metrics = draw.get_type_metrics('"' + text + 'm"')
       w, h = rotated_metrics(
-        metrics.width, 
-        metrics.height, 
+        metrics.width,
+        metrics.height,
         options[:rotate] || 0)
-      
+
       draw.translate(w/2, h/2)
       draw.rotate(options[:rotate] || 0)
       draw.translate(0, h/8) # RMagick text_align is really weird, trust me!
       draw.text(0, 0, text)
 
       draw.draw(@internal)
-      
+
       Rect.new(0, 0, w, h)
     end
-    
+
     def pixels(w = nil, h = nil)
       @internal.export_pixels(0, 0, w || width, h || height, 'RGBA')
     end
-    
+
+    # rubocop:disable TrivialAccessors
     def render
       @internal
     end
-    
+    # rubocop:enable TrivialAccessors
+
     private
-    
-    def rotated_metrics(width, height, degrees)
+
+    def rotated_metrics(w, h, degrees)
       radians = degrees * Math::PI / 180
 
       # FIXME: not too clear, just straightforward from d3.cloud
@@ -64,8 +70,8 @@ module MagicCloud
 
       w = [(wcr + hsr).abs, (wcr - hsr).abs].max.to_i
       h = [(wsr + hcr).abs, (wsr - hcr).abs].max.to_i
-      
-      [w,h]
+
+      [w, h]
     end
   end
 end

@@ -3,12 +3,13 @@ require 'forwardable'
 require 'logger'
 
 module MagicCloud
+  # Debugging utilities class for cloud development itself
   class Debug
     class << self
       def instance
         @instance ||= new
       end
-      
+
       def reinit!
         @instance = new
       end
@@ -19,9 +20,9 @@ module MagicCloud
 
     def initialize
       @logger = Logger.new(STDOUT).tap{|l| l.level = Logger::FATAL}
-      @stats = Hash.new{|h,k| h[k] = 0}
+      @stats = Hash.new{|h, k| h[k] = 0}
     end
-    
+
     attr_reader :logger, :stats
   end
 end

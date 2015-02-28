@@ -1,32 +1,38 @@
-#inherit_from: ./rubocop/rubocop-todo.yml
+inherit_from: ./rubocop/rubocop-todo.yml
 
 AllCops:
   Include:
-    - 'lib/*'
     - 'lib/**/*'
   Exclude:
-    - 'samples/*'
+    - 'samples/**/*'
+    - 'vendor/**/*'
 
-SpaceAroundOperators:
+# I'm using it for control flow
+Style/AndOr:
   Enabled: false
 
-SpaceAfterComma:
+Style/Blocks:
   Enabled: false
 
-SpaceBeforeBlockBraces:
+Style/Lambda:
+  Enabled: false
+  
+# As it's about arrays, see? Arrays should be in square braces.
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    ! '%w': ! '[]'
+
+Style/SpaceBeforeBlockBraces:
   EnforcedStyle: no_space
 
-SpaceInsideBlockBraces:
+# Just better like it this way
+Style/SpaceInsideBlockBraces:
   EnforcedStyle: no_space
+  SpaceBeforeBlockParameters: false
 
-SpaceInsideBlockBraces:
+Style/StructInheritance:
   Enabled: false
 
-TrailingWhitespace:
-  Enabled: false
-
-SingleLineMethods:
-  Enabled: false
-
-AndOr:
+# Some math just looks better this way
+Style/SpaceAroundOperators:
   Enabled: false
