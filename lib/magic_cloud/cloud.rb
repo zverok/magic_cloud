@@ -20,6 +20,8 @@ module MagicCloud
       @palette = make_palette(options[:palette] || :default)
     end
 
+    DEFAULT_FAMILY = 'Impact'
+
     PALETTES = {
       color20: %w[
         #1f77b4 #aec7e8 #ff7f0e #ffbb78 #2ca02c
@@ -34,6 +36,7 @@ module MagicCloud
       shapes = @words.each_with_index.map{|(word, size), i|
         Word.new(
           word,
+          font_family: @options[:font_family] || DEFAULT_FAMILY,
           font_size: scaler.call(word, size, i),
           color: palette.call(word, i),
           rotate: rotator.call(word, i)
@@ -84,6 +87,10 @@ module MagicCloud
       when :free
         ->(*){
           (((rand * 6) - 3) * 30).round
+        }
+      when :array
+        ->(*){
+          source.sample
         }
       when Proc
         source

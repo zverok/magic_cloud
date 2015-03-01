@@ -19,8 +19,9 @@ module MagicCloud
     def draw_text(text, options = {})
       draw = Magick::Draw.new
 
-      draw.font_family = 'Impact'
+      draw.font_family = options[:font_family]
       draw.font_weight = Magick::NormalWeight
+      draw.font_style = Magick::NormalStyle
 
       draw.translate(options[:x] || 0, options[:y] || 0)
       draw.pointsize = options[:font_size]

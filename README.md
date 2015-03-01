@@ -102,13 +102,13 @@ Configuration
 cloud = MagicCloud.new(words, palette: palette, rotate: rotate)
 ```
 
-* Palette (default is `:color20`):
+* `:palette` (default is `:color20`):
   * `:color10`, `:color20`, ... - from d3 []
   * `:rainbow` - some pretty rainbow palette sample, generated on []
   * `[array, of, colors]` - each color should be hex color, or any other RMagick color string: []
   * any object, responding to `color(tag, index)` - so, you can make color 
     depend on tag text, not only on its number in tags list
-* Rotate:
+* `:rotate` - rotation algorithm:
   * `:square` (only horizontal and vertical words) - it's default
   * `:none` - all words are horizontal (looks boooring)
   * `:free` - any word rotation angle, looks cool, but not very readable
@@ -116,11 +116,12 @@ cloud = MagicCloud.new(words, palette: palette, rotate: rotate)
   * `[array, of, angles]` - each of possible angle should be number 0..360
   * any lambda, accepting `(tag, index)` and returning 0..360
   * any object, responding to `rotate(tag, index)` and returning 0..360
-* Scale - how word sizes would be scaled to fit into (FONT_MIN..FONT_MAX) range:
+* `:scale` - how word sizes would be scaled to fit into (FONT_MIN..FONT_MAX) range:
   * `:no` - no scaling, all word sizes are treated as is;
   * `:linear` - linear scaling (default);
   * `:log` - logarithmic scaling;
-  * `:sqrt` - square root scaling.
+  * `:sqrt` - square root scaling;
+* `:font_family` (Impact is default).
 
 Current state
 -------------
@@ -130,3 +131,7 @@ pretty stable (apart from bugs introduced during extraction and gemification).
 
 What it really lacks for now, is thorough (or any) testing, and
 some more configuration options.
+
+Also, while core algorithms (collision_board.rb, layouter.rb) are pretty
+accurately written and documented, "wrapping code" (options parsing and
+so on) are a bit more chaotic - it's subject to refactor and cleanup.

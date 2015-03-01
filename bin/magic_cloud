@@ -20,10 +20,11 @@ opts = Slop.parse(help: true, strict: true) do
   on :palette=, "Palette name, see README for details"
   on :rotate=, "Rotation algo, see README for details"
   on :scale=, "Scaling algo, see README for details"
+  on :font_family=, "Font family (Impact by default)"
 
   on :f, :file=, "Output file path", required: true
 
-  on :stats, "Output debug stats (different operations count while looking for places for words)"
+  #on :stats, "Output debug stats (different operations count while looking for places for words)"
 end
 
 words = case
@@ -52,7 +53,8 @@ words = words.sort_by(&:last).reverse.first(MAX_WORDS_COUNT)
 options = {
   palette: opts[:palette] && opts[:palette].to_sym,
   rotate: opts[:rotate] && opts[:rotate].to_sym,
-  scale: opts[:scale] && opts[:scale].to_sym
+  scale: opts[:scale] && opts[:scale].to_sym,
+  font_family: opts[:font_family]
 }.reject{|k, v| v.nil?}
 
 cloud = MagicCloud::Cloud.new(words, options)
