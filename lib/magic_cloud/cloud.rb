@@ -1,10 +1,13 @@
 # encoding: utf-8
-require_relative './tag'
+require_relative './rect'
+require_relative './canvas'
+
+require_relative './word'
+
 require_relative './layouter'
 require_relative './spriter'
+
 require_relative './debug'
-require_relative './canvas'
-require_relative './rect'
 
 module MagicCloud
   # Main word-cloud class. Takes words with sizes, returns image
@@ -29,7 +32,7 @@ module MagicCloud
     def draw(width, height)
       # FIXME: do it in init, for specs would be happy
       shapes = @words.each_with_index.map{|(word, size), i|
-        Tag.new(
+        Word.new(
           word,
           font_size: scaler.call(word, size, i),
           color: palette.call(word, i),
@@ -37,7 +40,7 @@ module MagicCloud
         )
       }
 
-      Debug.reinit!
+      #Debug.reinit!
 
       Spriter.make_sprites!(shapes)
       layouter = Layouter.new(width, height)

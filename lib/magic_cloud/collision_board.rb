@@ -64,7 +64,7 @@ module MagicCloud
       return true if criss_cross_collision?(shape.rect)
 
       # then find which of placed sprites rectangles tag intersects
-      intersections = rects.map{|r| r.intersect(rect)}
+      intersections = rects.map{|r| r.intersect(shape.rect)}
 
       # no need to further check: this tag is not inside any others' rectangle
       if intersections.compact.empty?

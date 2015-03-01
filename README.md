@@ -8,7 +8,19 @@ Usage
 -----
 
 ```ruby
+words = [
+  [test, 50],
+  [me, 40],
+  [tenderly, 30],
+  # ....
+]
+cloud = MagicCloud::Cloud.new(words, rotate: :free, scale: :log)
+```
 
+Or from command-line:
+
+```
+./bin/magic_cloud --textfile samples/cat-in-the-hat.txt -f test.png --rotate free --scale log
 ```
 
 Resulting in:

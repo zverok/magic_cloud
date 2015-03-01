@@ -1,11 +1,9 @@
 # encoding: utf-8
 require_relative './shape'
 
-class MagicCloud
+module MagicCloud
   # Class representing individual word in word cloud
-  class Tag < Shape
-    # FIXME: rename to Word?
-
+  class Word < Shape
     def initialize(text, options)
       @text, @options = text.to_s, options
     end
@@ -21,7 +19,7 @@ class MagicCloud
     end
 
     def inspect
-      "#<Tag #{text}:#{options}>"
+      "#<#{self.class} #{text}:#{options}>"
     end
   end
 end

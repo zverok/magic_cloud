@@ -23,6 +23,8 @@ module MagicCloud
     end
 
     def self.make_sprites!(shapes)
+      Debug.logger.info "Starting sprites creation"
+      
       shapes.each do |shape|
         canvas = Canvas.new(1024, 1024)
         rect = shape.draw(canvas, color: 'red')
@@ -31,9 +33,11 @@ module MagicCloud
           rect,
           canvas.pixels(rect.width, rect.height))
 
-        Debug.logger.info "Sprite for #{shape.inspect} made: " \
+        Debug.logger.debug "Sprite for #{shape.inspect} made: " \
           "#{shape.sprite.width}×#{shape.sprite.height}"
       end
+
+      Debug.logger.info "Sprites successfully created"
     end
   end
 end

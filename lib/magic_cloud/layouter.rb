@@ -24,18 +24,18 @@ module MagicCloud
 
     def layout!(shapes)
       visible_shapes = []
-      bounds = nil
+      #bounds = nil
 
       shapes.each do |shape|
-        next unless find_place(shape, bounds)
+        next unless find_place(shape)
 
         visible_shapes.push(shape)
 
-        if bounds
-          bounds.adjust!(shape.rect)
-        else
-          bounds = shape.rect
-        end
+        #if bounds
+          #bounds.adjust!(shape.rect)
+        #else
+          #bounds = shape.rect
+        #end
       end
 
       visible_shapes
@@ -48,7 +48,7 @@ module MagicCloud
 
     # Incapsulating place lookup process
     class Place
-      def initalize(layouter, shape)
+      def initialize(layouter, shape)
         @layouter, @shape = layouter, shape
 
         @start_x = (@layouter.width/2 + (@layouter.width - @shape.width) * (rand-0.5)/2).to_i
@@ -56,13 +56,13 @@ module MagicCloud
 
         @max_delta = Math.sqrt(@layouter.width**2 + @layouter.height**2)
         @dt = rand < 0.5 ? 1 : -1 # direction of spiral
-        @t = -dt
+        @t = -@dt
         @spiral = make_spiral(@shape.size)
       end
 
       def next!
         @t += @dt
-        dx, dy = @spiral.call(t)
+        dx, dy = @spiral.call(@t)
 
         # no chances to find place
         fail PlaceNotFound if [dx, dy].map(&:abs).min > @max_delta
@@ -72,7 +72,7 @@ module MagicCloud
       end
 
       def ready?
-        !out_of_board? && !@layouter.board.collides?(shape)
+        !out_of_board? && !@layouter.board.collides?(@shape)
       end
 
       private
@@ -101,7 +101,7 @@ module MagicCloud
 
       def rectangular_spiral(size)
         dy = 4 * size * 0.1
-        dx = dy * width / height
+        dx = dy * @layouter.width / @layouter.height
         x = 0
         y = 0
         ->(t){
@@ -135,16 +135,16 @@ module MagicCloud
         next unless place.ready?
 
         board.add(shape)
-        Debug.logger.info "Place for #{shape.inspect} found " \
-          "in #{steps} steps (#{Time.now-start} sec)"
+        Debug.logger.info "Place for %p found in %i steps (%i sec)" %
+          [shape, steps, Time.now-start]
 
         break
       end
 
       true
     rescue PlaceNotFound
-      Debug.logger.warn "No place for #{shape.inspect} " \
-        "in #{step} steps (#{Time.now-start} sec)"
+      Debug.logger.warn "No place for %p found in %i steps (%i sec)" %
+          [shape, steps, Time.now-start]
 
       false
     end
