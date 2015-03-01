@@ -103,10 +103,10 @@ cloud = MagicCloud.new(words, palette: palette, rotate: rotate)
 ```
 
 * `:palette` (default is `:color20`):
-  * `:color10`, `:color20`, ... - from d3 []
-  * `:rainbow` - some pretty rainbow palette sample, generated on []
+  * `:category10`, `:category20`, ... - from (d3)[https://github.com/mbostock/d3/wiki/Ordinal-Scales#categorical-colors]
   * `[array, of, colors]` - each color should be hex color, or any other RMagick color string: []
-  * any object, responding to `color(tag, index)` - so, you can make color 
+  * any lambda, accepting `(word, index)` and returning 0..360
+  * any object, responding to `color(word, index)` - so, you can make color 
     depend on tag text, not only on its number in tags list
 * `:rotate` - rotation algorithm:
   * `:square` (only horizontal and vertical words) - it's default
@@ -114,8 +114,8 @@ cloud = MagicCloud.new(words, palette: palette, rotate: rotate)
   * `:free` - any word rotation angle, looks cool, but not very readable
     and slower to layout
   * `[array, of, angles]` - each of possible angle should be number 0..360
-  * any lambda, accepting `(tag, index)` and returning 0..360
-  * any object, responding to `rotate(tag, index)` and returning 0..360
+  * any lambda, accepting `(word, index)` and returning 0..360
+  * any object, responding to `rotate(word, index)` and returning 0..360
 * `:scale` - how word sizes would be scaled to fit into (FONT_MIN..FONT_MAX) range:
   * `:no` - no scaling, all word sizes are treated as is;
   * `:linear` - linear scaling (default);

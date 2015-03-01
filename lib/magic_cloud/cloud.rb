@@ -1,6 +1,7 @@
 # encoding: utf-8
 require_relative './rect'
 require_relative './canvas'
+require_relative './palettes'
 
 require_relative './word'
 
@@ -21,15 +22,6 @@ module MagicCloud
     end
 
     DEFAULT_FAMILY = 'Impact'
-
-    PALETTES = {
-      color20: %w[
-        #1f77b4 #aec7e8 #ff7f0e #ffbb78 #2ca02c
-        #98df8a #d62728 #ff9896 #9467bd #c5b0d5
-        #8c564b #c49c94 #e377c2 #f7b6d2 #7f7f7f
-        #c7c7c7 #bcbd22 #dbdb8d #17becf #9edae5
-      ]
-    }
 
     def draw(width, height)
       # FIXME: do it in init, for specs would be happy
@@ -61,9 +53,15 @@ module MagicCloud
     def make_palette(source)
       case source
       when :default
-        make_const_palette(:color20)
-      when :color20
+        make_const_palette(:category20)
+      when Symbol
         make_const_palette(source)
+      when Array
+        ->(_, index){source[index % source.size]}
+      when Proc
+        source
+      when ->(s){s.respond_to?(:color)}
+        ->(word, index){source.color(word, index)}
       else
         fail ArgumentError, "Unknown palette: #{source.inspect}"
       end
@@ -88,7 +86,7 @@ module MagicCloud
         ->(*){
           (((rand * 6) - 3) * 30).round
         }
-      when :array
+      when Array
         ->(*){
           source.sample
         }
