@@ -1,8 +1,9 @@
-FIXME: rectangular vs archimedean
-FIXME: colorbrewer https://github.com/mbostock/d3/blob/master/lib/colorbrewer/colorbrewer.js
+MagicCloud - simple pretty word cloud for Ruby
+==============================================
 
-Overview
---------
+**MagicCloud** is simple, pure-ruby library for making pretty
+[Wordle](http://www.wordle.net/)-like clouds. It uses RMagick as graphic
+backend.
 
 Usage
 -----
@@ -25,13 +26,24 @@ Or from command-line:
 
 Resulting in:
 
-img
+<img src="https://raw.github.com/zverok/magic_cloud/master/samples/cat.png" alt="Sample word cloud"/>
+
+Installation
+------------
+
+For now (version 0.0.1, first release):
+
+```
+gem install magic_cloud --source https://github.com/zverok/magic_cloud/
+```
+
+It would be published to RubyGems shortly.
 
 Origins
 -------
 
-At first, it was straightforward port of `d3.layout.cloud.js` by Jason
-Davies, which, I assume, is an implementation of Wordle algorithm.
+At first, it was straightforward port of [d3.layout.cloud.js](https://github.com/jasondavies/d3-cloud)
+by Jason Davies, which, I assume, is an implementation of Wordle algorithm.
 
 Then there was major refatoring, to make code correspond to Ruby
 standards (and be understandable to poor dumb me).
@@ -51,9 +63,6 @@ Performance
 It's reasonable for me. On my small Thinkpad E330, some 50-words cloud 
 image, size 700×500, are typically generated in <10sec. It's not that cool,
 yet not to long for you to fell asleep.
-
-Performance degrades significantly with each word, so 150-words cloud seems
-to be ~10 times slower than 50-words.
 
 Major performance eater is perfect collision detection, which Wordle-like
 cloud needs. MagicCloud for now uses really dumb algortihm with some
@@ -90,14 +99,7 @@ Configuration
 -------------
 
 ```ruby
-cloud = MagicCloud.new(words, width, height){|conf|
-  conf.palette = palette
-  conf.rotate = rotate
-}
-
-# or
-cloud = MagicCloud.new(words, width, height, palette: palette, rotate: rotate)
-
+cloud = MagicCloud.new(words, palette: palette, rotate: rotate)
 ```
 
 * Palette (default is `:color20`):
@@ -120,10 +122,11 @@ cloud = MagicCloud.new(words, width, height, palette: palette, rotate: rotate)
   * `:log` - logarithmic scaling;
   * `:sqrt` - square root scaling.
 
-Services
---------
+Current state
+-------------
 
-*Scaling*:
+This library is extracted from real-life project. It should be
+pretty stable (apart from bugs introduced during extraction and gemification).
 
-* `MagicCloud::Scale.linear`
-* `MagicCloud::Scale.logarithmic`
+What it really lacks for now, is thorough (or any) testing, and
+some more configuration options.
