@@ -62,7 +62,7 @@ Performance
 
 It's reasonable for me. On my small Thinkpad E330, some 50-words cloud 
 image, size 700×500, are typically generated in <10sec. It's not that cool,
-yet not to long for you to fell asleep.
+yet not too long for you to fell asleep.
 
 Major performance eater is perfect collision detection, which Wordle-like
 cloud needs. MagicCloud for now uses really dumb algortihm with some
@@ -104,8 +104,8 @@ cloud = MagicCloud.new(words, palette: palette, rotate: rotate)
 
 * `:palette` (default is `:color20`):
   * `:category10`, `:category20`, ... - from (d3)[https://github.com/mbostock/d3/wiki/Ordinal-Scales#categorical-colors]
-  * `[array, of, colors]` - each color should be hex color, or any other RMagick color string: []
-  * any lambda, accepting `(word, index)` and returning 0..360
+  * `[array, of, colors]` - each color should be hex color, or any other RMagick color string (See "Color names at http://www.imagemagick.org/RMagick/doc/imusage.html)
+  * any lambda, accepting `(word, index)` and returning color string
   * any object, responding to `color(word, index)` - so, you can make color 
     depend on tag text, not only on its number in tags list
 * `:rotate` - rotation algorithm:
@@ -135,3 +135,5 @@ some more configuration options.
 Also, while core algorithms (collision_board.rb, layouter.rb) are pretty
 accurately written and documented, "wrapping code" (options parsing and
 so on) are a bit more chaotic - it's subject to refactor and cleanup.
+
+All feedback, usage examples, bug reports and feature requests are appreciated!
