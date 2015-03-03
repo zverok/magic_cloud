@@ -37,16 +37,16 @@ Installation
 gem install magic_cloud
 ```
 
-rmagick is requirement, and it's need compilation, so you may expect
+rmagick is requirement, and it needs compilation, so you may expect
 problems in non-compiler-friendly environment (Windows).
 
 Origins
 -------
 
-At first, it was straightforward port of [d3.layout.cloud.js](https://github.com/jasondavies/d3-cloud)
+At first, it was a straightforward port of [d3.layout.cloud.js](https://github.com/jasondavies/d3-cloud)
 by Jason Davies, which, I assume, is an implementation of Wordle algorithm.
 
-Then there was major refatoring, to make code correspond to Ruby
+Then there was major refactoring, to make code correspond to Ruby
 standards (and be understandable to poor dumb me).
 
 Then collision algorithm was rewritten from scratch.
@@ -69,17 +69,17 @@ The time of cloud making depends on words count, size of image
 (it's faster to find place for all words on larger image) and used rotation
 algorithm (vertical+horizontal words only is significantly faster - and,
 on my opinion, better looking - than "cool" free-rotated-words cloud). It
-even depends on font - dense font like Impact takes mor time to being
-layed out than sparse Tahoma.
+even depends on font - dense font like Impact takes more time to lay
+out than sparse Tahoma.
 
 Major performance eater is perfect collision detection, which Wordle-like
-cloud needs. MagicCloud for now uses really dumb algortihm with some
+cloud needs. MagicCloud for now uses really dumb algorithm with some
 not-so-dumb optimizations. You can look into 
 `lib/magic_cloud/collision_board.rb` - everything can be optimized is 
 there; especially in `CollisionBoard#collides?` method.
 
 I assume, for example, that naive rewriting of code in there as a C
-extension can help significantly.
+extension would help significantly.
 
 Another possible way is adding some smart tricks, which eliminate as much
 of pixel-by-pixel comparisons as possible (some of already made are
@@ -134,7 +134,7 @@ cloud = MagicCloud.new(words, palette: palette, rotate: rotate)
 Current state
 -------------
 
-This library is extracted from real-life project. It should be
+This library is extracted from a real-life project. It should be
 pretty stable (apart from bugs introduced during extraction and gemification).
 
 What it really lacks for now, is thorough (or any) testing, and
