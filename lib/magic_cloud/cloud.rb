@@ -37,12 +37,15 @@ module MagicCloud
 
       #Debug.reinit!
 
-      Spriter.make_sprites!(shapes)
+      spriter = Spriter.new
+      spriter.make_sprites!(shapes)
+
       layouter = Layouter.new(width, height)
       visible = layouter.layout!(shapes)
 
       canvas = Canvas.new(width, height, 'white')
       visible.each{|sh| sh.draw(canvas)}
+
       canvas.render
     end
 

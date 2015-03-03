@@ -43,8 +43,8 @@ module MagicCloud
       _measure_text(draw, text, options.fetch(:rotate, 0))
     end
 
-    def pixels(w = nil, h = nil)
-      @internal.export_pixels(0, 0, w || width, h || height, 'RGBA')
+    def pixels(x, y, w, h)
+      @internal.export_pixels(x, y, w, h, 'RGBA')
     end
 
     # rubocop:disable TrivialAccessors

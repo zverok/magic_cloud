@@ -19,6 +19,10 @@ module MagicCloud
       canvas.draw_text(text, @options.merge(x: x, y: y).merge(opts))
     end
 
+    def measure(canvas)
+      canvas.measure_text(text, @options)
+    end
+
     def inspect
       "#<#{self.class} #{text}:#{options}>"
     end
