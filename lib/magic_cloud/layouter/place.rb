@@ -13,16 +13,8 @@ module MagicCloud
         @layouter, @shape = layouter, shape
 
         # initial position
-        @start_x = (
-          @layouter.width/2 +                # from center
-          (rand-0.5) *                       # random shift
-          (@layouter.width - @shape.width)   # not more than (cloud width - word width)
-        ).to_i
-        @start_y = (
-          @layouter.height/2 +               # from center
-          (rand-0.5) *                       # random shift
-          (@layouter.height - @shape.height) # not more than (cloud height - word height)
-        ).to_i
+        @start_x = (@layouter.width/2-@shape.width/2).to_i
+        @start_y = (@layouter.height/2-@shape.height/2).to_i
 
         # when shift of position is more than max delta (diagonal of cloud)
         # there is no hope it will eventually found its place

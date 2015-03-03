@@ -63,11 +63,14 @@ Performance
 
 It's reasonable for me. On my small Thinkpad E330, some 50-words cloud 
 image, size 700×500, are typically generated in <3sec. It's not that cool,
-yet not too long for you to fell asleep. The time of cloud making depends
-on words count, size of image (it's faster to find place for all words
-on larger image) and used rotation algorithm (vertical+horizontal words
-only is significantly faster - and, on my opinion, better looking - than
-"cool" free-rotated-words cloud).
+yet not too long for you to fell asleep.
+
+The time of cloud making depends on words count, size of image
+(it's faster to find place for all words on larger image) and used rotation
+algorithm (vertical+horizontal words only is significantly faster - and,
+on my opinion, better looking - than "cool" free-rotated-words cloud). It
+even depends on font - dense font like Impact takes mor time to being
+layed out than sparse Tahoma.
 
 Major performance eater is perfect collision detection, which Wordle-like
 cloud needs. MagicCloud for now uses really dumb algortihm with some
