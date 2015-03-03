@@ -11,7 +11,6 @@ module MagicCloud
 
     def make_sprites!(shapes)
       start = Time.now
-      @canv_counter = -1
       
       Debug.logger.info "Starting sprites creation"
       
@@ -22,7 +21,7 @@ module MagicCloud
       end
 
       Debug.logger.info "Sprites ready: %i sec, %i canvases" %
-        [Time.now - start, @canv_counter]
+        [Time.now - start, Debug.stats[:canvases]]
     end
 
     private
@@ -49,7 +48,7 @@ module MagicCloud
     CANVAS_SIZE = [1024, 1024]
 
     def restart_canvas!
-      @canv_counter += 1
+      Debug.stats[:canvases] += 1
       @canvas = Canvas.new(*CANVAS_SIZE)
       @cur_x, @cur_y, @row_height = 0, 0, 0
     end

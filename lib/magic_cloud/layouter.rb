@@ -135,7 +135,7 @@ module MagicCloud
         next unless place.ready?
 
         board.add(shape)
-        Debug.logger.info "Place for %p found in %i steps (%i sec)" %
+        Debug.logger.info "Place for %p found in %i steps (%.2f sec)" %
           [shape, steps, Time.now-start]
 
         break
@@ -143,7 +143,7 @@ module MagicCloud
 
       true
     rescue PlaceNotFound
-      Debug.logger.warn "No place for %p found in %i steps (%i sec)" %
+      Debug.logger.warn "No place for %p found in %i steps (%.2f sec)" %
           [shape, steps, Time.now-start]
 
       false

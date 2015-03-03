@@ -24,8 +24,12 @@ opts = Slop.parse(help: true, strict: true) do
 
   on :f, :file=, "Output file path", required: true
 
-  #on :stats, "Output debug stats (different operations count while looking for places for words)"
+  on :stats, "Output debug log and stats (different operations count while looking for places for words)"
 end
+
+include MagicCloud
+
+Debug.logger.level = Logger::INFO if opts.stats?
 
 words = case
 when opts[:words]
@@ -57,10 +61,9 @@ options = {
   font_family: opts[:font_family]
 }.reject{|k, v| v.nil?}
 
-cloud = MagicCloud::Cloud.new(words, options)
+cloud = Cloud.new(words, options)
 img = cloud.draw(opts[:width], opts[:height])
 
 img.write(opts[:file])
 
-
-
+p Debug.stats if opts.stats?
