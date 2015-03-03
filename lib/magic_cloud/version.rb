@@ -2,5 +2,5 @@
 
 # Wordle-like word cloud main module
 module MagicCloud
-  VERSION = '0.0.2' # aka Now Let's Publish!
+  VERSION = '0.0.3' # aka Better initial layout
 end
