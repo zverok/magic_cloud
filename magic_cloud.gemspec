@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.homepage = 'http://github.com/zverok/magic_cloud'
   s.licenses = ['MIT']
 
-  s.files = .split($RS).reject do |file|
+  s.files = `git ls-files`.split($RS).reject do |file|
     file =~ /^(?:
     spec\/.*
     |Gemfile
