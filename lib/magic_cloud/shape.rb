@@ -8,6 +8,11 @@ module MagicCloud
   class Shape
     attr_accessor :sprite, :x, :y
 
+    def initialize
+      @x = 0
+      @y = 0
+    end
+
     def width
       sprite.width
     end

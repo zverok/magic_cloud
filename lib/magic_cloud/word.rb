@@ -5,6 +5,7 @@ module MagicCloud
   # Class representing individual word in word cloud
   class Word < Shape
     def initialize(text, options)
+      super()
       @text, @options = text.to_s, options
     end
 

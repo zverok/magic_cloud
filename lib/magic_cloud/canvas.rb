@@ -17,33 +17,30 @@ module MagicCloud
     RADIANS = Math::PI / 180
 
     def draw_text(text, options = {})
+      draw = Magick::Draw.new # FIXME: is it necessary every time?
+      
+      x = options.fetch(:x, 0)
+      y = options.fetch(:y, 0)
+      rotate = options.fetch(:rotate, 0)
+
+      set_text_options(draw, options)
+
+      rect = _measure_text(draw, text, rotate)
+
+      draw.
+        translate(x + rect.width/2, y + rect.height/2).
+        rotate(rotate).
+        translate(0, rect.height/8). # RMagick text_align seems really weird
+        text(0, 0, text).
+        draw(@internal)
+
+      rect
+    end
+
+    def measure_text(text, options)
       draw = Magick::Draw.new
-
-      draw.font_family = options[:font_family]
-      draw.font_weight = Magick::NormalWeight
-      draw.font_style = Magick::NormalStyle
-
-      draw.translate(options[:x] || 0, options[:y] || 0)
-      draw.pointsize = options[:font_size]
-      draw.fill_color(options[:color])
-      #draw.stroke_color(options[:color])
-      draw.gravity(Magick::CenterGravity)
-      draw.text_align(Magick::CenterAlign)
-
-      metrics = draw.get_type_metrics('"' + text + 'm"')
-      w, h = rotated_metrics(
-        metrics.width,
-        metrics.height,
-        options[:rotate] || 0)
-
-      draw.translate(w/2, h/2)
-      draw.rotate(options[:rotate] || 0)
-      draw.translate(0, h/8) # RMagick text_align is really weird, trust me!
-      draw.text(0, 0, text)
-
-      draw.draw(@internal)
-
-      Rect.new(0, 0, w, h)
+      set_text_options(draw, options)
+      _measure_text(draw, text, options.fetch(:rotate, 0))
     end
 
     def pixels(w = nil, h = nil)
@@ -57,6 +54,25 @@ module MagicCloud
     # rubocop:enable TrivialAccessors
 
     private
+
+    def set_text_options(draw, options)
+      draw.font_family = options[:font_family]
+      draw.font_weight = Magick::NormalWeight
+      draw.font_style = Magick::NormalStyle
+
+      draw.pointsize = options[:font_size]
+      draw.fill_color(options[:color])
+      #draw.stroke_color(options[:color])
+      draw.gravity(Magick::CenterGravity)
+      draw.text_align(Magick::CenterAlign)
+    end
+
+    def _measure_text(draw, text, rotate)
+      metrics = draw.get_type_metrics('"' + text + 'm"')
+      w, h = rotated_metrics(metrics.width, metrics.height, rotate)
+
+      Rect.new(0, 0, w, h)
+    end
 
     def rotated_metrics(w, h, degrees)
       radians = degrees * Math::PI / 180
