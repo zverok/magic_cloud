@@ -84,10 +84,11 @@ module MagicCloud
     end
 
     def pixels_collision?(shape, rect)
+      l, t = shape.left, shape.top
       (rect.x0...rect.x1).each do |x|
         (rect.y0...rect.y1).each do |y|
-          dx = x - shape.left
-          dy = y - shape.top
+          dx = x - l
+          dy = y - t
           return true if shape.sprite.at(dx, dy) && at(x, y)
         end
       end
@@ -96,9 +97,10 @@ module MagicCloud
     end
 
     def add(shape)
+      l, t = shape.left, shape.top
       shape.height.times do |dy|
         shape.width.times do |dx|
-          put(shape.left + dx, shape.top + dy) if shape.sprite.at(dx, dy)
+          put(l + dx, t + dy) if shape.sprite.at(dx, dy)
         end
       end
 

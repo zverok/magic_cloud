@@ -6,19 +6,32 @@ module MagicCloud
   # Word for wordcloud is inherited from it, and its potentially
   # possible to inherit other types of shapes and layout them also.
   class Shape
-    attr_accessor :sprite, :x, :y
-
     def initialize
       @x = 0
       @y = 0
+      @sprite = nil
+      @rect = nil
+      @width = 0
+      @height = 0
     end
 
-    def width
-      sprite.width
+    attr_reader :sprite, :x, :y, :width, :height, :rect
+
+    def sprite=(sprite)
+      @sprite = sprite
+      @width = sprite.width
+      @height = sprite.height
+      @rect = Rect.new(left, top, right, bottom)
     end
 
-    def height
-      sprite.height
+    def x=(newx)
+      @x = newx
+      @rect.move_to(@x, @y)
+    end
+
+    def y=(newy)
+      @y = newy
+      @rect.move_to(@x, @y)
     end
 
     def left
@@ -37,12 +50,7 @@ module MagicCloud
       y + height
     end
 
-    def rect
-      Rect.new(x, y, x + width, y + height)
-    end
-
-    # returns rect
-    def draw(*)
+    def draw(_canvas)
       fail NotImplementedError
     end
   end

@@ -5,30 +5,23 @@ module MagicCloud
   # I've tried.
   class BitMatrix
     def initialize(width, height)
-      @bits = (0..height).map{[0] * width}
+      @width, @height = width, height
+      @bits = [0] * height*width
     end
 
-    attr_reader :bits
+    attr_reader :bits, :width, :height
 
     def put(x, y, px = 1)
       x < width or fail("#{x} outside matrix: #{width}")
       y < height or fail("#{y} outside matrix: #{height}")
 
-      bits[y][x] = 1 unless px == 0 # It's faster with unless
+      bits[y*@width + x] = 1 unless px == 0 # It's faster with unless
     end
 
     # returns true/false
     # FIXME: maybe #put should also accept true/false
     def at(x, y)
-      !bits[y][x].zero?
-    end
-
-    def height
-      bits.count
-    end
-
-    def width
-      bits.first ? bits.first.count : 0
+      bits[y*@width + x] != 0 # faster than .zero?
     end
 
     def dump
