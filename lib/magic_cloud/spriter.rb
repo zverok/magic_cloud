@@ -12,7 +12,7 @@ module MagicCloud
     def make_sprites!(shapes)
       start = Time.now
       
-      Debug.logger.info "Starting sprites creation"
+      Debug.logger.info 'Starting sprites creation'
       
       restart_canvas!
       
@@ -20,7 +20,7 @@ module MagicCloud
         make_sprite(shape)
       end
 
-      Debug.logger.info "Sprites ready: %i sec, %i canvases" %
+      Debug.logger.info 'Sprites ready: %i sec, %i canvases' %
         [Time.now - start, Debug.stats[:canvases]]
     end
 
@@ -41,7 +41,7 @@ module MagicCloud
           
       shift_position(rect)
 
-      Debug.logger.debug "Sprite for %p ready: %i×%i" %
+      Debug.logger.debug 'Sprite for %p ready: %i×%i' %
         [shape, shape.sprite.width, shape.sprite.height]
     end
 
@@ -62,17 +62,15 @@ module MagicCloud
     # ensure this rect can be drawn at current position
     # or shift position of it can't
     def ensure_position(rect)
-        # no place in current row -> go to next row
-        if cur_x + rect.width > canvas.width
-          @cur_x = 0
-          @cur_y += row_height
-          @row_height = 0
-        end
+      # no place in current row -> go to next row
+      if cur_x + rect.width > canvas.width
+        @cur_x = 0
+        @cur_y += row_height
+        @row_height = 0
+      end
 
-        # no place in current canvas -> restart canvas
-        if cur_y + rect.height > canvas.height
-          restart_canvas!
-        end
+      # no place in current canvas -> restart canvas
+      restart_canvas! if cur_y + rect.height > canvas.height
     end
 
     def pixels_to_sprite(pixels, rect)

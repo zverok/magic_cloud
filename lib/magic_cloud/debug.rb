@@ -10,12 +10,8 @@ module MagicCloud
         @instance ||= new
       end
 
-      def reinit!
-        @instance = new
-      end
-
       extend Forwardable
-      def_delegators :instance, :logger, :stats
+      def_delegators :instance, :logger, :stats, :reset!
     end
 
     def initialize
@@ -24,5 +20,9 @@ module MagicCloud
     end
 
     attr_reader :logger, :stats
+
+    def reset!
+      @stats = Hash.new{|h, k| h[k] = 0}
+    end
   end
 end

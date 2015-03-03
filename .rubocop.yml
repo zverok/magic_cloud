@@ -1,4 +1,3 @@
-inherit_from: ./rubocop/rubocop-todo.yml
 
 AllCops:
   Include:
@@ -6,6 +5,7 @@ AllCops:
   Exclude:
     - 'samples/**/*'
     - 'vendor/**/*'
+    - 'bin/**/*'
 
 # I'm using it for control flow
 Style/AndOr:
@@ -13,6 +13,12 @@ Style/AndOr:
 
 Style/Blocks:
   Enabled: false
+
+Style/DotPosition:
+  EnforcedStyle: trailing
+
+Style/FormatString:
+  EnforcedStyle: percent
 
 Style/Lambda:
   Enabled: false
@@ -36,3 +42,17 @@ Style/StructInheritance:
 # Some math just looks better this way
 Style/SpaceAroundOperators:
   Enabled: false
+
+Style/TrailingWhitespace:
+  Enabled: false
+  
+# I'm trying! Trying!
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 20
+
+# FIXME: maybe this one is not that fair
+Metrics/AbcSize:
+  Max: 20

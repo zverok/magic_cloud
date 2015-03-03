@@ -35,7 +35,7 @@ module MagicCloud
         )
       }
 
-      #Debug.reinit!
+      Debug.reset!
 
       spriter = Spriter.new
       spriter.make_sprites!(shapes)
@@ -53,6 +53,7 @@ module MagicCloud
 
     attr_reader :palette, :rotator, :scaler
 
+    # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity,Metrics/AbcSize
     def make_palette(source)
       case source
       when :default
@@ -131,5 +132,6 @@ module MagicCloud
         ((ssize - smin).to_f * koeff + FONT_MIN).to_i
       }
     end
+    # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity,Metrics/AbcSize
   end
 end

@@ -62,7 +62,6 @@ module MagicCloud
 
       draw.pointsize = options[:font_size]
       draw.fill_color(options[:color])
-      #draw.stroke_color(options[:color])
       draw.gravity(Magick::CenterGravity)
       draw.text_align(Magick::CenterAlign)
     end
