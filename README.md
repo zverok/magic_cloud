@@ -31,13 +31,12 @@ Resulting in:
 Installation
 ------------
 
-For now (version 0.0.1, first release):
-
 ```
-gem install magic_cloud --source https://github.com/zverok/magic_cloud/
+gem install magic_cloud
 ```
 
-It would be published to RubyGems shortly.
+rmagick is requirement, and it's need compilation, so you may expect
+problems in non-compiler-friendly environment (Windows).
 
 Origins
 -------
