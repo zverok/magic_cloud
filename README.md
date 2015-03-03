@@ -1,6 +1,8 @@
 MagicCloud - simple pretty word cloud for Ruby
 ==============================================
 
+[![Gem Version](https://badge.fury.io/rb/magic_cloud.svg)](http://badge.fury.io/rb/magic_cloud)
+
 **MagicCloud** is simple, pure-ruby library for making pretty
 [Wordle](http://www.wordle.net/)-like clouds. It uses RMagick as graphic
 backend.
