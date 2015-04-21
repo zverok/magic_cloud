@@ -25,9 +25,9 @@ module MagicCloud
     end
 
     def dump
-      (0...height).map{|y|
+      (0...height).map do |y|
         (0...width).map{|x| at(x, y) ? ' ' : 'x'}.join
-      }.join("\n")
+      end.join("\n")
     end
   end
 end

@@ -1,9 +1,10 @@
 # encoding: utf-8
+# Wordle-like word cloud main module
 module MagicCloud
   PALETTES = {
     # Categorical colors from d3
     # Source: https://github.com/mbostock/d3/wiki/Ordinal-Scales#categorical-colors
-    
+
     category10: %w[
       #1f77b4 #ff7f0e #2ca02c #d62728 #9467bd
       #8c564b #e377c2 #7f7f7f #bcbd22 #17becf
@@ -15,7 +16,7 @@ module MagicCloud
       #8c564b #c49c94 #e377c2 #f7b6d2 #7f7f7f
       #c7c7c7 #bcbd22 #dbdb8d #17becf #9edae5
     ],
-    
+
     category20b: %w[
       #393b79 #5254a3 #6b6ecf #9c9ede #637939
       #8ca252 #b5cf6b #cedb9c #8c6d31 #bd9e39
