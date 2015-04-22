@@ -40,4 +40,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'faker'
   s.add_development_dependency 'ruby-prof'
+  s.add_development_dependency 'yard'
+  s.add_development_dependency 'redcarpet'
 end

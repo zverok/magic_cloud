@@ -5,3 +5,4 @@ Gemfile.lock
 profile
 *.gem
 rubocop
+.yardoc
