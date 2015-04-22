@@ -12,22 +12,8 @@ module MagicCloud
       def initialize(layouter, shape)
         @layouter, @shape = layouter, shape
 
-        # initial position
-        @start_x = (@layouter.width/2-@shape.width/2).to_i
-        @start_y = (@layouter.height/2-@shape.height/2).to_i
-
-        # when shift of position is more than max delta (diagonal of cloud)
-        # there is no hope it will eventually found its place
-        @max_delta = Math.sqrt(@layouter.width**2 + @layouter.height**2)
-
-        # algo of next position calc
-        @spiral = make_spiral(@shape.size)
-
-        # direction of spiral
-        @dt = rand < 0.5 ? 1 : -1 
-
-        # initial point of time before we start to look for place
-        @t = -@dt
+        setup_position
+        setup_algo
       end
 
       def next!
@@ -45,6 +31,26 @@ module MagicCloud
       end
 
       private
+
+      def setup_position
+        @start_x = (@layouter.width / 2 - @shape.width / 2).to_i
+        @start_y = (@layouter.height / 2 - @shape.height / 2).to_i
+      end
+
+      def setup_algo
+        # when shift of position is more than max delta (diagonal of cloud)
+        # there is no hope it will eventually found its place
+        @max_delta = Math.sqrt(@layouter.width**2 + @layouter.height**2)
+
+        # algo of next position calc
+        @spiral = make_spiral(@shape.size)
+
+        # direction of spiral
+        @dt = rand < 0.5 ? 1 : -1 
+
+        # initial point of time before we start to look for place
+        @t = -@dt
+      end
 
       def out_of_board?
         @shape.left < 0 || @shape.top < 0 ||

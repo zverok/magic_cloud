@@ -2,6 +2,7 @@
 require_relative './palettes'
 
 module MagicCloud
+  # Utility colorizing functions
   module Colorize
     module_function
 

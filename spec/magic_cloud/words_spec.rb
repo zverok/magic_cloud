@@ -14,6 +14,12 @@ describe MagicCloud::Words do
     its(:size){should == source.size}
 
     context 'from array of arrays' do
+      let(:source){
+        10.times.map{
+          [Faker::Lorem.word, rand(200)]
+        }
+      }
+
       it{should all(be_a(Hash))}
     end
   end

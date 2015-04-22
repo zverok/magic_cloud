@@ -73,6 +73,7 @@ module MagicCloud
       Rect.new(0, 0, w, h)
     end
 
+    # rubocop:disable Metrics/AbcSize
     def rotated_metrics(w, h, degrees)
       radians = degrees * Math::PI / 180
 
@@ -89,5 +90,6 @@ module MagicCloud
 
       [w, h]
     end
+    # rubocop:enable Metrics/AbcSize
   end
 end

@@ -28,6 +28,7 @@ module MagicCloud
 
     attr_reader :canvas, :cur_x, :cur_y, :row_height
 
+    # rubocop:disable Metrics/AbcSize
     def make_sprite(shape)
       rect = shape.measure(canvas)
       ensure_position(rect)
@@ -44,6 +45,7 @@ module MagicCloud
       Debug.logger.debug 'Sprite for %p ready: %i×%i' %
         [shape, shape.sprite.width, shape.sprite.height]
     end
+    # rubocop:enable Metrics/AbcSize
 
     CANVAS_SIZE = [1024, 1024]
 

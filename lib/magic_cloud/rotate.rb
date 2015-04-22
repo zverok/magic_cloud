@@ -1,7 +1,9 @@
 # encoding: utf-8
 module MagicCloud
+  # Utility rotate functions
   module Rotate
     module_function
+
     def none(words)
       rotate(words){0}
     end
@@ -24,6 +26,7 @@ module MagicCloud
     end
 
     private
+
     module_function
 
     extend Util::EnsureHashes
