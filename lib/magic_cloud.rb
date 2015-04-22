@@ -5,3 +5,5 @@ module MagicCloud
 end
 
 require_relative 'magic_cloud/cloud'
+
+require_relative 'magic_cloud/scale'

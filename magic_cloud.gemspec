@@ -38,5 +38,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-its'
   s.add_development_dependency 'bundler'
+  s.add_development_dependency 'faker'
   s.add_development_dependency 'ruby-prof'
 end
