@@ -95,55 +95,9 @@ module MagicCloud
       end
     end
 
-    # FIXME: should be options too
-    FONT_MIN = 10
-    FONT_MAX = 100
-
-    def make_scaler(words, algo)
-      norm =
-        case algo
-        when :no
-          # no normalization, treat tag weights as font size
-          return ->(_word, size, _index){size}
-        when :linear
-          ->(x){x}
-        when :log
-          ->(x){Math.log(x) / Math.log(10)}
-        when :sqrt
-          ->(x){Math.sqrt(x)}
-        else
-          fail ArgumentError, "Unknown scaling algo: #{algo.inspect}"
-        end
-
-      smin = norm.call(words.map(&:last).min)
-      smax = norm.call(words.map(&:last).max)
-      koeff = (FONT_MAX - FONT_MIN).to_f / (smax - smin)
-
-      ->(_word, size, _index){
-        ssize = norm.call(size)
-        ((ssize - smin).to_f * koeff + FONT_MIN).to_i
-      }
-    end
     # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity,Metrics/AbcSize
 
-    private
+    include Util::EnsureHashes
 
-    def ensure_hashes(words)
-      words.map{|w|
-        case w
-        when Hash
-          w
-        when Array
-          w.size == 2 or
-            fail ArgumentError, "Unprocessable word: #{w}."\
-              "Expecting either hash, or [word, size] pair"
-
-          {text: w.first, font_size: w.last}
-        else
-          fail ArgumentError, "Unprocessable word: #{w}."\
-            "Expecting either hash, or [word, size] pair"
-        end
-      }
-    end
   end
 end

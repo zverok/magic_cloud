@@ -23,7 +23,11 @@ module MagicCloud
 
     module_function
 
+    extend Util::EnsureHashes
+
     def scale(words, target_min, target_max, &normalizer)
+      words = ensure_hashes(words)
+      
       source_min = normalizer.call(words.map{|w| w[:font_size]}.min)
       source_max = normalizer.call(words.map{|w| w[:font_size]}.max)
       koeff = (target_max - target_min).to_f / (source_max - source_min)

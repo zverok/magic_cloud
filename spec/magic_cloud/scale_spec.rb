@@ -20,10 +20,24 @@ describe MagicCloud::Scale do
     end
 
     describe 'result order' do
-      
+      let(:sorted_source){source.sort_by{|h| h[:font_size]}}
+      let(:sorted_result){result.sort_by{|h| h[:font_size]}}
+
+      specify 'order should be preserved' do
+        expect(sorted_source.map{|h| h[:text]}).to eq \
+          sorted_result.map{|h| h[:text]}
+      end
     end
     
     context 'when array of arrays' do
+      let(:source){
+        10.times.map{
+          [Faker::Lorem.word, rand(200)]
+        }
+      }
+      subject{result}
+
+      it{should all( be_a(Hash) )}
     end
   end
 
