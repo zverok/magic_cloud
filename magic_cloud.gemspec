@@ -35,6 +35,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'slop', '~> 3.0.0' # for bin/magic_cloud options parsing
   
   s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec-its'
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'ruby-prof'
 end

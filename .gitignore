@@ -2,3 +2,6 @@ tmp
 vendor
 .bundle
 Gemfile.lock
+profile
+*.gem
+rubocop

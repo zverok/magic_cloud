@@ -1,5 +1,5 @@
 # encoding: utf-8
-require 'RMagick'
+require 'rmagick'
 
 module MagicCloud
   # Thin wrapper around RMagick, incapsulating ALL the real drawing.
