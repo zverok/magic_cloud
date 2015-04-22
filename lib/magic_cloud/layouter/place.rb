@@ -43,7 +43,7 @@ module MagicCloud
         @max_delta = Math.sqrt(@layouter.width**2 + @layouter.height**2)
 
         # algo of next position calc
-        @spiral = make_spiral(@shape.size)
+        @spiral = make_spiral(@shape.font_size)
 
         # direction of spiral
         @dt = rand < 0.5 ? 1 : -1 

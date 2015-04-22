@@ -4,7 +4,10 @@ module MagicCloud
   module Scale
     module_function
 
-    def log(words, min, max)
+    FONT_MIN = 10
+    FONT_MAX = 100
+
+    def log(words, min = FONT_MIN, max = FONT_MAX)
       scale(words, min, max){|x| x.zero? ? 0 : Math.log(x) / Math.log(10)}
     end
 

@@ -21,6 +21,8 @@ module MagicCloud
     attr_reader :words
 
     def draw(width, height)
+      shapes = words
+      
       Debug.reset!
 
       spriter = Spriter.new

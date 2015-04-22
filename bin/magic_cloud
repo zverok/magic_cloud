@@ -54,12 +54,15 @@ end
 
 words = words.sort_by(&:last).reverse.first(opts[:maxwords])
 
-options = {
-  palette: opts[:palette] && opts[:palette].to_sym,
-  rotate: opts[:rotate] && opts[:rotate].to_sym,
-  scale: opts[:scale] && opts[:scale].to_sym,
-  font_family: opts[:font_family]
-}.reject{|k, v| v.nil?}
+words = MagicCloud::Words.new(words)
+
+words = words.palette(opts[:palette].to_sym) if opts[:palette]
+words = words.rotate(opts[:rotate].to_sym) if opts[:rotate]
+words = words.scale((opts[:scale] || :log).to_sym)
+
+if opts[:font_family]
+  words.each{|w| w.update(font_family: opts[:font_family])}
+end
 
 if opts.profile?
   require 'ruby-prof'
@@ -68,8 +71,7 @@ end
 
 start = Time.now
 
-cloud = Cloud.new(words, options)
-img = cloud.draw(opts[:width], opts[:height])
+img = words.to_cloud.draw(opts[:width], opts[:height])
 
 if opts.profile?
   result = RubyProf.stop
