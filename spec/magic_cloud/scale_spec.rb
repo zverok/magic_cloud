@@ -15,8 +15,8 @@ describe MagicCloud::Scale do
 
     describe 'result range' do
       subject{result.map{|h| h[:font_size]}}
-      its(:min){should == min}
-      its(:max){should == max}
+      its(:min){should >= min}
+      its(:max){should <= max}
       it{should all( be_covered_with(min..max) )}
     end
 

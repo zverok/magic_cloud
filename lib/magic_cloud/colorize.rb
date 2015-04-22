@@ -1,4 +1,6 @@
 # encoding: utf-8
+require_relative './palettes'
+
 module MagicCloud
   module Colorize
     module_function

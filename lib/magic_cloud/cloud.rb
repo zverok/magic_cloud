@@ -1,7 +1,6 @@
 # encoding: utf-8
 require_relative './rect'
 require_relative './canvas'
-require_relative './palettes'
 
 require_relative './word'
 
@@ -37,34 +36,6 @@ module MagicCloud
     end
 
     private
-
-    attr_reader :palette
-
-    # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity,Metrics/AbcSize
-    def make_palette(source)
-      case source
-      when :default
-        make_const_palette(:category20)
-      when Symbol
-        make_const_palette(source)
-      when Array
-        ->(_, index){source[index % source.size]}
-      when Proc
-        source
-      when ->(s){s.respond_to?(:color)}
-        ->(word, index){source.color(word, index)}
-      else
-        fail ArgumentError, "Unknown palette: #{source.inspect}"
-      end
-    end
-
-    def make_const_palette(sym)
-      palette = PALETTES[sym] or
-        fail(ArgumentError, "Unknown palette: #{sym.inspect}")
-
-      ->(_, index){palette[index % palette.size]}
-    end
-    # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity,Metrics/AbcSize
 
     include Util::EnsureHashes
   end
