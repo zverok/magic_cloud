@@ -8,10 +8,10 @@ module MagicCloud
     DEFAULT_PALETTE = MagicCloud::PALETTES[:category20]
     DEFAULT_ANGLES = [0, 90, 180] # FIXME - shouldn't it be [-90,0,90]?
 
-    def initialize(text, options)
+    def initialize(options)
       super()
-      @text, @options = text.to_s, options
 
+      @text = options.fetch(:text)
       @font_size = options.fetch(:font_size)
 
       @font_family = options.fetch(:font_family, DEFAULT_FONT_FAMILY)
@@ -20,8 +20,7 @@ module MagicCloud
       @rotate = options.fetch(:rotate, DEFAULT_ANGLES.sample)
     end
 
-    attr_reader :text, :options,
-      :font_size, :font_family, :color, :rotate
+    attr_reader :text, :font_size, :font_family, :color, :rotate
 
     def draw(canvas, opts = {})
       canvas.draw_text(text, drawing_options.merge(x: x, y: y).merge(opts))

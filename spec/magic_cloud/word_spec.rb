@@ -2,12 +2,10 @@
 describe MagicCloud::Word do
   describe '#initalize' do
     let(:options){
-      {color: 'red', font_size: 12, font_family: 'Impact', rotate: 90}
+      {text: 'Test', color: 'red', font_size: 12, font_family: 'Impact', rotate: 90}
     }
 
-    subject{described_class.new('Test', options)}
-
-    its(:text){should == 'Test'}
+    subject{described_class.new(options)}
 
     it 'should be set up' do
       options.each do |key, val|
@@ -16,7 +14,7 @@ describe MagicCloud::Word do
     end
 
     context 'default values' do
-      let(:options){ {font_size: 12} }
+      let(:options){ {text: 'Test', font_size: 12} }
 
       its(:font_family){should == described_class::DEFAULT_FONT_FAMILY}
       its(:color){should be_one_of(described_class::DEFAULT_PALETTE)}

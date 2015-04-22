@@ -14,25 +14,19 @@ module MagicCloud
   # Main word-cloud class. Takes words with sizes, returns image
   class Cloud
     def initialize(words, options = {})
-      @words = words.sort_by(&:last).reverse
-      @options = options
-      @scaler = make_scaler(words, options[:scale] || :log)
-      @rotator = make_rotator(options[:rotate] || :square)
-      @palette = make_palette(options[:palette] || :default)
+      @words = ensure_hashes(words).
+               map(&Word.method(:new)).
+               sort_by(&:font_size).reverse
+        
+      #@options = options
+      #@scaler = make_scaler(words, options[:scale] || :log)
+      #@rotator = make_rotator(options[:rotate] || :square)
+      #@palette = make_palette(options[:palette] || :default)
     end
 
-    def draw(width, height)
-      # FIXME: do it in init, for specs would be happy
-      shapes = @words.each_with_index.map{|(word, size), i|
-        Word.new(
-          word,
-          font_family: @options[:font_family] || DEFAULT_FAMILY,
-          font_size: scaler.call(word, size, i),
-          color: palette.call(word, i),
-          rotate: rotator.call(word, i)
-        )
-      }
+    attr_reader :words
 
+    def draw(width, height)
       Debug.reset!
 
       spriter = Spriter.new
@@ -131,5 +125,25 @@ module MagicCloud
       }
     end
     # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity,Metrics/AbcSize
+
+    private
+
+    def ensure_hashes(words)
+      words.map{|w|
+        case w
+        when Hash
+          w
+        when Array
+          w.size == 2 or
+            fail ArgumentError, "Unprocessable word: #{w}."\
+              "Expecting either hash, or [word, size] pair"
+
+          {text: w.first, font_size: w.last}
+        else
+          fail ArgumentError, "Unprocessable word: #{w}."\
+            "Expecting either hash, or [word, size] pair"
+        end
+      }
+    end
   end
 end
