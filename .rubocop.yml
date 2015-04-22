@@ -3,6 +3,7 @@ AllCops:
   Include:
     - 'lib/**/*'
   Exclude:
+    - 'spec/**/*'
     - 'samples/**/*'
     - 'vendor/**/*'
     - 'bin/**/*'
@@ -11,8 +12,11 @@ AllCops:
 Style/AndOr:
   Enabled: false
 
-Style/Blocks:
+Style/BlockDelimiters:
   Enabled: false
+
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
 
 Style/DotPosition:
   EnforcedStyle: trailing

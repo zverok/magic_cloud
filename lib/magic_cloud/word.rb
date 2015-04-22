@@ -6,7 +6,7 @@ module MagicCloud
   class Word < Shape
     DEFAULT_FONT_FAMILY = 'Impact'
     DEFAULT_PALETTE = MagicCloud::PALETTES[:category20]
-    DEFAULT_ANGLES = [0, 90, 180] # FIXME - shouldn't it be [-90,0,90]?
+    DEFAULT_ANGLES = [0, 90, 180] # FIXME: shouldn't it be [-90,0,90]?
 
     def initialize(options)
       super()

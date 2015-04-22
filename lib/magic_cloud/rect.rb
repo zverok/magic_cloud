@@ -60,7 +60,6 @@ module MagicCloud
         @y0 < other.y0 && @y1 > other.y1 &&
           @x0 > other.x0 && @x1 < other.x1
     end
-    # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/AbcSize
 
     def intersect(other)
       # direct comparison is dirtier, yet significantly faster than
@@ -76,6 +75,7 @@ module MagicCloud
         Rect.new(ix0, iy0, ix1, iy1)
       end
     end
+    # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/AbcSize
 
     def inspect
       "#<Rect[#{x0},#{y0};#{x1},#{y1}]>"

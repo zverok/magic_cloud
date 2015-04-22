@@ -1,10 +1,11 @@
 # encoding: utf-8
 module MagicCloud
+  # Utility scale functions
   module Scale
     module_function
 
     def log(words, min, max)
-      scale(words, min, max){|x| Math.log(x) / Math.log(10)}
+      scale(words, min, max){|x| x.zero? ? 0 : Math.log(x) / Math.log(10)}
     end
 
     def linear(words, min, max)
@@ -25,11 +26,13 @@ module MagicCloud
 
     extend Util::EnsureHashes
 
+    # rubocop:disable Metrics/AbcSize
     def scale(words, target_min, target_max, &normalizer)
       words = ensure_hashes(words)
       
       source_min = normalizer.call(words.map{|w| w[:font_size]}.min)
       source_max = normalizer.call(words.map{|w| w[:font_size]}.max)
+
       koeff = (target_max - target_min).to_f / (source_max - source_min)
 
       words.map{|w|
@@ -39,5 +42,6 @@ module MagicCloud
         w.merge(font_size: target_size)
       }
     end
+    # rubocop:enable Metrics/AbcSize
   end
 end

@@ -13,15 +13,10 @@ require_relative './debug'
 module MagicCloud
   # Main word-cloud class. Takes words with sizes, returns image
   class Cloud
-    def initialize(words, options = {})
+    def initialize(words, _options = {})
       @words = ensure_hashes(words).
                map(&Word.method(:new)).
                sort_by(&:font_size).reverse
-        
-      #@options = options
-      #@scaler = make_scaler(words, options[:scale] || :log)
-      #@rotator = make_rotator(options[:rotate] || :square)
-      #@palette = make_palette(options[:palette] || :default)
     end
 
     attr_reader :words
@@ -98,6 +93,5 @@ module MagicCloud
     # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity,Metrics/AbcSize
 
     include Util::EnsureHashes
-
   end
 end
