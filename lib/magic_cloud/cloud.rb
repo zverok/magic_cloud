@@ -38,7 +38,7 @@ module MagicCloud
 
     private
 
-    attr_reader :palette, :rotator, :scaler
+    attr_reader :palette
 
     # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity,Metrics/AbcSize
     def make_palette(source)
@@ -64,32 +64,6 @@ module MagicCloud
 
       ->(_, index){palette[index % palette.size]}
     end
-
-    def make_rotator(source)
-      case source
-      when :none
-        ->(*){0}
-      when :square
-        ->(*){
-          (rand * 2).to_i * 90
-        }
-      when :free
-        ->(*){
-          (((rand * 6) - 3) * 30).round
-        }
-      when Array
-        ->(*){
-          source.sample
-        }
-      when Proc
-        source
-      when ->(s){s.respond_to?(:rotate)}
-        ->(word, index){source.rotate(word, index)}
-      else
-        fail ArgumentError, "Unknown rotation algo: #{source.inspect}"
-      end
-    end
-
     # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity,Metrics/AbcSize
 
     include Util::EnsureHashes
