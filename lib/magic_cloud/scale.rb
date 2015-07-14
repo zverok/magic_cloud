@@ -4,22 +4,22 @@ module MagicCloud
   module Scale
     module_function
 
-    FONT_MIN = 10
+    FONT_MIN = 20
     FONT_MAX = 100
 
     def log(words, min = FONT_MIN, max = FONT_MAX)
       scale(words, min, max){|x| x.zero? ? 0 : Math.log(x) / Math.log(10)}
     end
 
-    def linear(words, min, max)
+    def linear(words, min = FONT_MIN, max = FONT_MAX)
       scale(words, min, max){|x| x}
     end
 
-    def sqrt(words, min, max)
+    def sqrt(words, min = FONT_MIN, max = FONT_MAX)
       scale(words, min, max){|x| Math.sqrt(x)}
     end
 
-    def custom(words, min, max, &normalizer)
+    def custom(words, min = FONT_MIN, max = FONT_MAX, &normalizer)
       scale(words, min, max, &normalizer)
     end
 

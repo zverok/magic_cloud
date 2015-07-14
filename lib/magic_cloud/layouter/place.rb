@@ -63,12 +63,13 @@ module MagicCloud
       # spirals produce significantly different results, and then
       # either one spiral should left, or it should became an option.
       def make_spiral(step)
-        rectangular_spiral(step)
+        #rectangular_spiral(step)
+        archimedean_spiral(step)
       end
 
       # rubocop:disable Metrics/AbcSize
       def archimedean_spiral(size)
-        e = width / height
+        e = @layouter.width / @layouter.height
         ->(t){
           t1 = t * size * 0.01
 
