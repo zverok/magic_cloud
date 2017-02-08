@@ -73,8 +73,9 @@ module MagicCloud
     def _measure_text(draw, text, rotate, padding = 0.15)
       metrics = draw.get_type_metrics('"' + text + 'm"')
       w, h = rotated_metrics(metrics.width, metrics.height, rotate)
+      w, h = padding(w, h)
 
-      Rect.new(0, 0, w * (1 + padding), h * (1 + padding))
+      Rect.new(0, 0, w, h)
     end
 
     def rotated_metrics(w, h, degrees)
@@ -92,6 +93,10 @@ module MagicCloud
       h = [(wsr + hcr).abs, (wsr - hcr).abs].max.to_i
 
       [w, h]
+    end
+
+    def padding(w, h)
+      [ (w * 1.15).round, (h * 1.15).round ]
     end
   end
 end
