@@ -56,7 +56,11 @@ module MagicCloud
     private
 
     def set_text_options(draw, options)
-      draw.font_family = options[:font_family]
+      if options[:font_source]
+        draw.font = options[:font_source]
+      else
+        draw.font_family = options[:font_family]
+      end
       draw.font_weight = Magick::NormalWeight
       draw.font_style = Magick::NormalStyle
 
