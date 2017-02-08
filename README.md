@@ -130,6 +130,7 @@ cloud = MagicCloud.new(words, palette: palette, rotate: rotate)
   * `:log` - logarithmic scaling;
   * `:sqrt` - square root scaling;
 * `:font_family` (Impact is default).
+* `:font_source` - Full path to custom font file. Overwrite `:font_family`.
 
 Current state
 -------------
