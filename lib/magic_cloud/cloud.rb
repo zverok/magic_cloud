@@ -25,7 +25,7 @@ module MagicCloud
 
     def draw(width, height)
       # FIXME: do it in init, for specs would be happy
-      shapes = @words.each_with_index.map{|(word, size), i|
+      shapes = @words.each_with_index.map do |(word, size), i|
         Word.new(
           word,
           font_family: @options[:font_family] || DEFAULT_FAMILY,
@@ -33,7 +33,7 @@ module MagicCloud
           color: palette.call(word, i),
           rotate: rotator.call(word, i)
         )
-      }
+      end
 
       Debug.reset!
 
@@ -83,17 +83,11 @@ module MagicCloud
       when :none
         ->(*){0}
       when :square
-        ->(*){
-          (rand * 2).to_i * 90
-        }
+        ->(*){(rand * 2).to_i * 90}
       when :free
-        ->(*){
-          (((rand * 6) - 3) * 30).round
-        }
+        ->(*){(((rand * 6) - 3) * 30).round}
       when Array
-        ->(*){
-          source.sample
-        }
+        ->(*){source.sample}
       when Proc
         source
       when ->(s){s.respond_to?(:rotate)}
@@ -127,10 +121,10 @@ module MagicCloud
       smax = norm.call(words.map(&:last).max)
       koeff = (FONT_MAX - FONT_MIN).to_f / (smax - smin)
 
-      ->(_word, size, _index){
+      ->(_word, size, _index) do
         ssize = norm.call(size)
         ((ssize - smin).to_f * koeff + FONT_MIN).to_i
-      }
+      end
     end
     # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity,Metrics/AbcSize
   end

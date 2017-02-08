@@ -24,7 +24,7 @@ module MagicCloud
         @spiral = make_spiral(@shape.size)
 
         # direction of spiral
-        @dt = rand < 0.5 ? 1 : -1 
+        @dt = rand < 0.5 ? 1 : -1
 
         # initial point of time before we start to look for place
         @t = -@dt
@@ -63,14 +63,14 @@ module MagicCloud
       # rubocop:disable Metrics/AbcSize
       def archimedean_spiral(size)
         e = width / height
-        ->(t){
+        ->(t) do
           t1 = t * size * 0.01
 
           [
             e * t1 * Math.cos(t1),
             t1 * Math.sin(t1)
           ].map(&:round)
-        }
+        end
       end
 
       def rectangular_spiral(size)
@@ -78,7 +78,7 @@ module MagicCloud
         dx = dy * @layouter.width / @layouter.height
         x = 0
         y = 0
-        ->(t){
+        ->(t) do
           sign = t < 0 ? -1 : 1
 
           # zverok: this is original comment & code from d3.layout.cloud.js
@@ -93,7 +93,7 @@ module MagicCloud
           end
 
           [x, y].map(&:round)
-        }
+        end
       end
       # rubocop:enable Metrics/AbcSize
     end
