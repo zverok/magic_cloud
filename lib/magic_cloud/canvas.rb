@@ -70,7 +70,7 @@ module MagicCloud
       draw.text_align(Magick::CenterAlign)
     end
 
-    def _measure_text(draw, text, rotate, padding = 0.15)
+    def _measure_text(draw, text, rotate)
       metrics = draw.get_type_metrics('"' + text + 'm"')
       w, h = rotated_metrics(metrics.width, metrics.height, rotate)
       w, h = padding(w, h)
@@ -96,7 +96,7 @@ module MagicCloud
     end
 
     def padding(w, h)
-      [ (w * 1.15).round, (h * 1.15).round ]
+      [ (w * 1.3).round, (h * 1.3).round ]
     end
   end
 end
