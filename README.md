@@ -111,7 +111,7 @@ cloud = MagicCloud.new(words, palette: palette, rotate: rotate)
 ```
 
 * `:palette` (default is `:color20`):
-  * `:category10`, `:category20`, ... - from (d3)[https://github.com/d3/d3-scale/blob/master/README.md#category-scales]
+  * `:category10`, `:category20`, ... - from [D3.js](https://github.com/d3/d3-scale/blob/master/README.md#category-scales)
   * `[array, of, colors]` - each color should be hex color, or any other RMagick color string (See "Color names at http://www.imagemagick.org/RMagick/doc/imusage.html)
   * any lambda, accepting `(word, index)` and returning color string
   * any object, responding to `color(word, index)` - so, you can make color
