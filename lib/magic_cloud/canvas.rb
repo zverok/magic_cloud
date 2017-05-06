@@ -1,5 +1,5 @@
 # encoding: utf-8
-require 'RMagick'
+require 'rmagick'
 
 module MagicCloud
   # Thin wrapper around RMagick, incapsulating ALL the real drawing.
@@ -18,7 +18,7 @@ module MagicCloud
 
     def draw_text(text, options = {})
       draw = Magick::Draw.new # FIXME: is it necessary every time?
-      
+
       x = options.fetch(:x, 0)
       y = options.fetch(:y, 0)
       rotate = options.fetch(:rotate, 0)
