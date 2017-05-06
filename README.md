@@ -12,9 +12,9 @@ Usage
 
 ```ruby
 words = [
-  [test, 50],
-  [me, 40],
-  [tenderly, 30],
+  ['test', 50],
+  ['me', 40],
+  ['tenderly', 30],
   # ....
 ]
 cloud = MagicCloud::Cloud.new(words, rotate: :free, scale: :log)
@@ -61,7 +61,7 @@ References:
 Performance
 -----------
 
-It's reasonable for me. On my small Thinkpad E330, some 50-words cloud 
+It's reasonable for me. On my small Thinkpad E330, some 50-words cloud
 image, size 700×500, are typically generated in <3sec. It's not that cool,
 yet not too long for you to fell asleep.
 
@@ -74,8 +74,8 @@ out than sparse Tahoma.
 
 Major performance eater is perfect collision detection, which Wordle-like
 cloud needs. MagicCloud for now uses really dumb algorithm with some
-not-so-dumb optimizations. You can look into 
-`lib/magic_cloud/collision_board.rb` - everything can be optimized is 
+not-so-dumb optimizations. You can look into
+`lib/magic_cloud/collision_board.rb` - everything can be optimized is
 there; especially in `CollisionBoard#collides?` method.
 
 I assume, for example, that naive rewriting of code in there as a C
@@ -88,18 +88,18 @@ criss-cross intersection check, and memoizing of last crossed sprite).
 Memory effectiviness
 --------------------
 
-Basically: it's not. 
+Basically: it's not.
 
-Plain Ruby arrays are used to represent collision bitmasks (each array 
-member stand for 1 bit), so, for example, 700×500 pixel cloud will requre 
+Plain Ruby arrays are used to represent collision bitmasks (each array
+member stand for 1 bit), so, for example, 700×500 pixel cloud will requre
 collision board size `700*500` (i.e. 350k array items only for board, and
 slightly less for all sprites).
 
 It should be wise to use some packing (considering each Ruby Fixmnum can
-represent not one, but whole 32 bits). Unfortunately, all bit array 
-libraries I've tried are causing major slowdown of cloud computation. 
-With, say, 50 words we'll have literally millions of operation 
-`bitmask#[]` and `bitmask#[]=`, so, even methods 
+represent not one, but whole 32 bits). Unfortunately, all bit array
+libraries I've tried are causing major slowdown of cloud computation.
+With, say, 50 words we'll have literally millions of operation
+`bitmask#[]` and `bitmask#[]=`, so, even methods
 like `Fixnum#&` and `Fixnum#|` (typically used for bit array representation)
 are causing significant overload.
 
@@ -114,7 +114,7 @@ cloud = MagicCloud.new(words, palette: palette, rotate: rotate)
   * `:category10`, `:category20`, ... - from (d3)[https://github.com/mbostock/d3/wiki/Ordinal-Scales#categorical-colors]
   * `[array, of, colors]` - each color should be hex color, or any other RMagick color string (See "Color names at http://www.imagemagick.org/RMagick/doc/imusage.html)
   * any lambda, accepting `(word, index)` and returning color string
-  * any object, responding to `color(word, index)` - so, you can make color 
+  * any object, responding to `color(word, index)` - so, you can make color
     depend on tag text, not only on its number in tags list
 * `:rotate` - rotation algorithm:
   * `:square` (only horizontal and vertical words) - it's default
