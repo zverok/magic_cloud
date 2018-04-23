@@ -17,6 +17,8 @@ module MagicCloud
     RADIANS = Math::PI / 180
 
     def draw_text(text, options = {})
+      return nil if text.empty?
+
       draw = Magick::Draw.new # FIXME: is it necessary every time?
 
       x = options.fetch(:x, 0)
