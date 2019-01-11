@@ -69,7 +69,7 @@ module MagicCloud
     end
 
     def _measure_text(draw, text, rotate)
-      metrics = draw.get_type_metrics('"' + text + 'm"')
+      metrics = draw.get_type_metrics('"' + validate_text(text) + 'm"')
       w, h = rotated_metrics(metrics.width, metrics.height, rotate)
 
       Rect.new(0, 0, w, h)
@@ -90,6 +90,11 @@ module MagicCloud
       h = [(wsr + hcr).abs, (wsr - hcr).abs].max.to_i
 
       [w, h]
+    end
+
+    def validate_text(text)
+      return text +=" " if text[-1] == "%"
+      return text
     end
   end
 end
