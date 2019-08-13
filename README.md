@@ -18,6 +18,10 @@ words = [
   # ....
 ]
 cloud = MagicCloud::Cloud.new(words, rotate: :free, scale: :log)
+
+# To save to file, if not redering it for a page
+img = cloud.draw(960, 600) #default height/width
+img.write('test.png')
 ```
 
 Or from command-line:
@@ -129,7 +133,7 @@ cloud = MagicCloud.new(words, palette: palette, rotate: rotate)
   * `:linear` - linear scaling (default);
   * `:log` - logarithmic scaling;
   * `:sqrt` - square root scaling;
-* `:font_family` (Impact is default).
+* `:font_family` (Impact is default, ex. Arial, Helvetica, Futura).
 
 Current state
 -------------
