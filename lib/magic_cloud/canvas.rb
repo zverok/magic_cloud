@@ -1,5 +1,5 @@
 # encoding: utf-8
-require 'RMagick'
+require 'rmagick'
 
 module MagicCloud
   # Thin wrapper around RMagick, incapsulating ALL the real drawing.
@@ -17,8 +17,10 @@ module MagicCloud
     RADIANS = Math::PI / 180
 
     def draw_text(text, options = {})
+      return nil if text.empty?
+
       draw = Magick::Draw.new # FIXME: is it necessary every time?
-      
+
       x = options.fetch(:x, 0)
       y = options.fetch(:y, 0)
       rotate = options.fetch(:rotate, 0)
@@ -71,7 +73,7 @@ module MagicCloud
     end
 
     def _measure_text(draw, text, rotate)
-      metrics = draw.get_type_metrics('"' + text + 'm"')
+      metrics = draw.get_type_metrics('"' + validate_text(text) + 'm"')
       w, h = rotated_metrics(metrics.width, metrics.height, rotate)
 
       Rect.new(0, 0, w, h)
@@ -92,6 +94,11 @@ module MagicCloud
       h = [(wsr + hcr).abs, (wsr - hcr).abs].max.to_i
 
       [w, h]
+    end
+
+    def validate_text(text)
+      return text +=" " if text[-1] == "%"
+      return text
     end
   end
 end
