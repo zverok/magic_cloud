@@ -32,9 +32,8 @@ module MagicCloud
           color: palette.call(word, i),
           rotate: rotator.call(word, i)
         }
-        if @options[:font_source]
-          word_options[:font_source] = @options[:font_source]
-        end
+        word_options[:font] = @options[:font] if @options[:font]
+
         Word.new(
           word,
           word_options

@@ -56,8 +56,8 @@ module MagicCloud
     private
 
     def set_text_options(draw, options)
-      if options[:font_source]
-        draw.font = options[:font_source]
+      if options[:font]
+        draw.font = options[:font]
       else
         draw.font_family = options[:font_family]
       end
