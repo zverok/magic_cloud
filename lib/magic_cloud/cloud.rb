@@ -26,12 +26,17 @@ module MagicCloud
     def draw(width, height)
       # FIXME: do it in init, for specs would be happy
       shapes = @words.each_with_index.map{|(word, size), i|
-        Word.new(
-          word,
+        word_options = {
           font_family: @options[:font_family] || DEFAULT_FAMILY,
           font_size: scaler.call(word, size, i),
           color: palette.call(word, i),
           rotate: rotator.call(word, i)
+        }
+        word_options[:font] = @options[:font] if @options[:font]
+
+        Word.new(
+          word,
+          word_options
         )
       }
 
