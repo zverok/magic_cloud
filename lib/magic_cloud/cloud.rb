@@ -116,27 +116,31 @@ module MagicCloud
       norm =
         case algo
         when :no
-          # no normalization, treat tag weights as font size
-          return ->(_word, size, _index){size}
+          return ->(_word, size, _index) { size }
         when :linear
-          ->(x){x}
+          ->(x) { x }
         when :log
-          ->(x){Math.log(x) / Math.log(10)}
+          ->(x) { Math.log(x) / Math.log(10) }
         when :sqrt
-          ->(x){Math.sqrt(x)}
+          ->(x) { Math.sqrt(x) }
         else
           fail ArgumentError, "Unknown scaling algo: #{algo.inspect}"
         end
-
+    
       smin = norm.call(words.map(&:last).min)
       smax = norm.call(words.map(&:last).max)
-      koeff = (FONT_MAX - FONT_MIN).to_f / (smax - smin)
-
-      ->(_word, size, _index){
-        ssize = norm.call(size)
-        ((ssize - smin).to_f * koeff + FONT_MIN).to_i
-      }
+    
+      if smin == smax
+        ->(_word, _size, _index) { FONT_MIN }  # Return the minimum font size if no scaling is needed
+      else
+        koeff = (FONT_MAX - FONT_MIN).to_f / (smax - smin)
+        ->(_word, size, _index) {
+          ssize = norm.call(size)
+          ((ssize - smin).to_f * koeff + FONT_MIN).to_i
+        }
+      end
     end
+    
     # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity,Metrics/AbcSize
   end
 end
