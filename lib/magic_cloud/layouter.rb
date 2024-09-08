@@ -1,5 +1,6 @@
-# encoding: utf-8
-require_relative './collision_board'
+# frozen_string_literal: true
+
+require_relative 'collision_board'
 
 module MagicCloud
   # Main magic of magic cloud - layouting shapes without collisions.
@@ -49,7 +50,7 @@ module MagicCloud
 
         board.add(shape)
         Debug.logger.info 'Place for %p found in %i steps (%.2f sec)' %
-          [shape, steps, Time.now-start]
+                          [shape, steps, Time.now-start]
 
         break
       end
@@ -57,11 +58,11 @@ module MagicCloud
       true
     rescue PlaceNotFound
       Debug.logger.warn 'No place for %p found in %i steps (%.2f sec)' %
-        [shape, steps, Time.now-start]
+                        [shape, steps, Time.now-start]
 
       false
     end
   end
 end
 
-require_relative './layouter/place'
+require_relative 'layouter/place'

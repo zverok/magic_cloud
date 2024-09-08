@@ -1,4 +1,5 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 module MagicCloud
   # Dead simple 2-dimensional "bit matrix", storing 1s and 0s.
   # Not memory effectife at all, but the fastest pure-Ruby solution
@@ -25,8 +26,8 @@ module MagicCloud
     end
 
     def dump
-      (0...height).map{|y|
-        (0...width).map{|x| at(x, y) ? ' ' : 'x'}.join
+      (0...height).map { |y|
+        (0...width).map { |x| at(x, y) ? ' ' : 'x' }.join
       }.join("\n")
     end
   end

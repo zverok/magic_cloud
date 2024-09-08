@@ -1,4 +1,5 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 require 'forwardable'
 require 'logger'
 
@@ -15,14 +16,14 @@ module MagicCloud
     end
 
     def initialize
-      @logger = Logger.new(STDOUT).tap{|l| l.level = Logger::FATAL}
-      @stats = Hash.new{|h, k| h[k] = 0}
+      @logger = Logger.new($stdout).tap { |l| l.level = Logger::FATAL }
+      @stats = Hash.new { |h, k| h[k] = 0 }
     end
 
     attr_reader :logger, :stats
 
     def reset!
-      @stats = Hash.new{|h, k| h[k] = 0}
+      @stats = Hash.new { |h, k| h[k] = 0 }
     end
   end
 end

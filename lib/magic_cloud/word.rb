@@ -1,5 +1,6 @@
-# encoding: utf-8
-require_relative './shape'
+# frozen_string_literal: true
+
+require_relative 'shape'
 
 module MagicCloud
   # Class representing individual word in word cloud

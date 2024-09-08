@@ -1,5 +1,6 @@
-# encoding: utf-8
-require_relative './bit_matrix'
+# frozen_string_literal: true
+
+require_relative 'bit_matrix'
 
 module MagicCloud
   # Incapsulates sprite maker for any Shape, able to draw itself.
@@ -21,14 +22,14 @@ module MagicCloud
       end
 
       Debug.logger.info 'Sprites ready: %i sec, %i canvases' %
-        [Time.now - start, Debug.stats[:canvases]]
+                        [Time.now - start, Debug.stats[:canvases]]
     end
 
     private
 
     attr_reader :canvas, :cur_x, :cur_y, :row_height
 
-    def make_sprite(shape)
+    def make_sprite(shape) # rubocop:todo Metrics/AbcSize
       rect = shape.measure(canvas)
       ensure_position(rect)
 
@@ -42,10 +43,10 @@ module MagicCloud
       shift_position(rect)
 
       Debug.logger.debug 'Sprite for %p ready: %i×%i' %
-        [shape, shape.sprite.width, shape.sprite.height]
+                         [shape, shape.sprite.width, shape.sprite.height]
     end
 
-    CANVAS_SIZE = [1024, 1024]
+    CANVAS_SIZE = [1024, 1024].freeze
 
     def restart_canvas!
       Debug.stats[:canvases] += 1

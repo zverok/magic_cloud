@@ -1,5 +1,7 @@
 
 AllCops:
+  NewCops: enable
+  TargetRubyVersion: 2.7
   Include:
     - 'lib/**/*'
   Exclude:
@@ -11,10 +13,7 @@ AllCops:
 Style/AndOr:
   Enabled: false
 
-Style/Blocks:
-  Enabled: false
-
-Style/DotPosition:
+Layout/DotPosition:
   EnforcedStyle: trailing
 
 Style/FormatString:
@@ -28,26 +27,41 @@ Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     ! '%w': ! '[]'
 
-Style/SpaceBeforeBlockBraces:
-  EnforcedStyle: no_space
-
-# Just better like it this way
-Style/SpaceInsideBlockBraces:
-  EnforcedStyle: no_space
-  SpaceBeforeBlockParameters: false
-
 Style/StructInheritance:
   Enabled: false
 
 # Some math just looks better this way
-Style/SpaceAroundOperators:
+Layout/SpaceAroundOperators:
   Enabled: false
 
-Style/TrailingWhitespace:
+Layout/TrailingWhitespace:
   Enabled: false
-  
+
+Style/ParallelAssignment:
+  Enabled: false
+
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Style/SignalException:
+  EnforcedStyle: semantic
+
+Style/BlockDelimiters:
+  EnforcedStyle: semantic
+  AllowBracesOnProceduralOneLiners: true
+
+# Might have performance penalty
+Style/NumericPredicate:
+  Enabled: false
+
 # I'm trying! Trying!
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
 
 Metrics/MethodLength:
@@ -56,3 +70,4 @@ Metrics/MethodLength:
 # FIXME: maybe this one is not that fair
 Metrics/AbcSize:
   Max: 20
+

@@ -1,4 +1,5 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 module MagicCloud
   # Utility geometrical rectangle, implementing arithmetic interactions
   # with other rectangles
@@ -9,6 +10,7 @@ module MagicCloud
     end
 
     attr_accessor :x0, :y0, :x1, :y1
+
     # NB: we are trying to use instance variables instead of accessors
     #     inside this class methods, because they are called so many
     #     times that accessor overhead IS significant.
@@ -36,20 +38,18 @@ module MagicCloud
       @y0 = y
     end
 
-    # rubocop:disable Metrics/AbcSize
     def adjust!(other)
       @x0 = other.x0 if other.x0 < @x0
       @y0 = other.y0 if other.y0 < @y0
       @x1 = other.x1 if other.x1 > @x1
       @y1 = other.y1 if other.y1 > @y1
     end
-    # rubocop:enable Metrics/AbcSize
 
     def adjust(other)
-      dup.tap{|d| d.adjust!(other)}
+      dup.tap { |d| d.adjust!(other) }
     end
 
-    # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
     def criss_cross?(other)
       # case 1: this one is horizontal:
       # overlaps other by x, to right and left, and goes inside it by y
@@ -60,15 +60,17 @@ module MagicCloud
         @y0 < other.y0 && @y1 > other.y1 &&
           @x0 > other.x0 && @x1 < other.x1
     end
-    # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/AbcSize
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     def intersect(other)
       # direct comparison is dirtier, yet significantly faster than
       # something like [@x0, other.x0].max
+      # rubocop:disable Style/MinMaxComparison
       ix0 = @x0 > other.x0 ? @x0 : other.x0
       ix1 = @x1 < other.x1 ? @x1 : other.x1
       iy0 = @y0 > other.y0 ? @y0 : other.y0
       iy1 = @y1 < other.y1 ? @y1 : other.y1
+      # rubocop:enable Style/MinMaxComparison
 
       if ix0 > ix1 || iy0 > iy1
         nil # rectangles are not intersected, in fact

@@ -1,4 +1,5 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 module MagicCloud
   class Layouter
     class PlaceNotFound < RuntimeError
@@ -9,7 +10,7 @@ module MagicCloud
     # 2. at each step, shift in spiral from the previous place
     # 3. always knows, if the place "ready" for shape (empty and inside board)
     class Place
-      def initialize(layouter, shape)
+      def initialize(layouter, shape) # rubocop:todo Metrics/AbcSize
         @layouter, @shape = layouter, shape
 
         # initial position
@@ -60,10 +61,9 @@ module MagicCloud
         rectangular_spiral(step)
       end
 
-      # rubocop:disable Metrics/AbcSize
       def archimedean_spiral(size)
         e = width / height
-        ->(t){
+        ->(t) {
           t1 = t * size * 0.01
 
           [
@@ -78,7 +78,7 @@ module MagicCloud
         dx = dy * @layouter.width / @layouter.height
         x = 0
         y = 0
-        ->(t){
+        ->(t) {
           sign = t < 0 ? -1 : 1
 
           # zverok: this is original comment & code from d3.layout.cloud.js
@@ -95,7 +95,6 @@ module MagicCloud
           [x, y].map(&:round)
         }
       end
-      # rubocop:enable Metrics/AbcSize
     end
   end
 end

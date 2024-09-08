@@ -1,4 +1,5 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 module MagicCloud
   PALETTES = {
     # Categorical colors from d3
@@ -29,5 +30,5 @@ module MagicCloud
       #a1d99b #c7e9c0 #756bb1 #9e9ac8 #bcbddc
       #dadaeb #636363 #969696 #bdbdbd #d9d9d9
     ]
-  }
+  }.freeze
 end

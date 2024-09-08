@@ -1,5 +1,6 @@
-# encoding: utf-8
-require_relative './bit_matrix'
+# frozen_string_literal: true
+
+require_relative 'bit_matrix'
 
 module MagicCloud
   # Pixel-by-pixel collision board
@@ -17,7 +18,7 @@ module MagicCloud
     attr_reader :rects, :intersections_cache
 
     def criss_cross_collision?(rect)
-      if rects.any?{|r| r.criss_cross?(rect)}
+      if rects.any? { |r| r.criss_cross?(rect) }
         Debug.stats[:criss_cross] += 1
         true
       else
@@ -25,6 +26,7 @@ module MagicCloud
       end
     end
 
+    # rubocop:disable Lint/HashCompareByIdentity -- probably should be followed, but don't have time to test it now
     def collides_previous?(shape, intersections)
       prev_idx = intersections_cache[shape.object_id]
 
@@ -52,6 +54,7 @@ module MagicCloud
 
       false
     end
+    # rubocop:enable Lint/HashCompareByIdentity
 
     def collides?(shape)
       Debug.stats[:collide_total] += 1
@@ -64,7 +67,7 @@ module MagicCloud
       return true if criss_cross_collision?(shape.rect)
 
       # then find which of placed sprites rectangles tag intersects
-      intersections = rects.map{|r| r.intersect(shape.rect)}
+      intersections = rects.map { |r| r.intersect(shape.rect) }
 
       # no need to further check: this tag is not inside any others' rectangle
       if intersections.compact.empty?

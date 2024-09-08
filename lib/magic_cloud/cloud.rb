@@ -1,18 +1,19 @@
-# encoding: utf-8
-require_relative './rect'
-require_relative './canvas'
-require_relative './palettes'
+# frozen_string_literal: true
 
-require_relative './word'
+require_relative 'rect'
+require_relative 'canvas'
+require_relative 'palettes'
 
-require_relative './layouter'
-require_relative './spriter'
+require_relative 'word'
 
-require_relative './debug'
+require_relative 'layouter'
+require_relative 'spriter'
+
+require_relative 'debug'
 
 module MagicCloud
   # Main word-cloud class. Takes words with sizes, returns image
-  class Cloud
+  class Cloud # rubocop:todo Metrics/ClassLength
     def initialize(words, options = {})
       @words = words.sort_by(&:last).reverse
       @options = options
@@ -23,9 +24,10 @@ module MagicCloud
 
     DEFAULT_FAMILY = 'Impact'
 
-    def draw(width, height)
+    # rubocop:todo Metrics/MethodLength
+    def draw(width, height) # rubocop:todo Metrics/AbcSize, Metrics/MethodLength
       # FIXME: do it in init, for specs would be happy
-      shapes = @words.each_with_index.map{|(word, size), i|
+      shapes = @words.each_with_index.map { |(word, size), i|
         word_options = {
           font_family: @options[:font_family] || DEFAULT_FAMILY,
           font_size: scaler.call(word, size, i),
@@ -49,10 +51,11 @@ module MagicCloud
       visible = layouter.layout!(shapes)
 
       canvas = Canvas.new(width, height, 'white')
-      visible.each{|sh| sh.draw(canvas)}
+      visible.each { |sh| sh.draw(canvas) }
 
       canvas.render
     end
+    # rubocop:enable Metrics/MethodLength
 
     private
 
@@ -66,11 +69,11 @@ module MagicCloud
       when Symbol
         make_const_palette(source)
       when Array
-        ->(_, index){source[index % source.size]}
+        ->(_, index) { source[index % source.size] }
       when Proc
         source
-      when ->(s){s.respond_to?(:color)}
-        ->(word, index){source.color(word, index)}
+      when ->(s) { s.respond_to?(:color) }
+        ->(word, index) { source.color(word, index) }
       else
         fail ArgumentError, "Unknown palette: #{source.inspect}"
       end
@@ -80,29 +83,29 @@ module MagicCloud
       palette = PALETTES[sym] or
         fail(ArgumentError, "Unknown palette: #{sym.inspect}")
 
-      ->(_, index){palette[index % palette.size]}
+      ->(_, index) { palette[index % palette.size] }
     end
 
     def make_rotator(source)
       case source
       when :none
-        ->(*){0}
+        ->(*) { 0 }
       when :square
-        ->(*){
+        ->(*) {
           (rand * 2).to_i * 90
         }
       when :free
-        ->(*){
+        ->(*) {
           (((rand * 6) - 3) * 30).round
         }
       when Array
-        ->(*){
+        ->(*) {
           source.sample
         }
       when Proc
         source
-      when ->(s){s.respond_to?(:rotate)}
-        ->(word, index){source.rotate(word, index)}
+      when ->(s) { s.respond_to?(:rotate) }
+        ->(word, index) { source.rotate(word, index) }
       else
         fail ArgumentError, "Unknown rotation algo: #{source.inspect}"
       end
@@ -131,7 +134,7 @@ module MagicCloud
       smax = norm.call(words.map(&:last).max)
     
       if smin == smax
-        ->(_word, _size, _index) { FONT_MIN }  # Return the minimum font size if no scaling is needed
+        ->(_word, _size, _index) { FONT_MIN } # Return the minimum font size if no scaling is needed
       else
         koeff = (FONT_MAX - FONT_MIN).to_f / (smax - smin)
         ->(_word, size, _index) {

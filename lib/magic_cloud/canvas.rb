@@ -1,4 +1,5 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 require 'rmagick'
 
 module MagicCloud
@@ -9,14 +10,14 @@ module MagicCloud
   class Canvas
     def initialize(w, h, back = 'transparent')
       @width, @height = w, h
-      @internal = Magick::Image.new(w, h){|i| i.background_color =  back}
+      @internal = Magick::Image.new(w, h) { |i| i.background_color = back }
     end
 
     attr_reader :internal, :width, :height
 
     RADIANS = Math::PI / 180
 
-    def draw_text(text, options = {})
+    def draw_text(text, options = {}) # rubocop:todo Metrics/AbcSize
       return nil if text.empty?
 
       draw = Magick::Draw.new # FIXME: is it necessary every time?
@@ -49,11 +50,9 @@ module MagicCloud
       @internal.export_pixels(x, y, w, h, 'RGBA')
     end
 
-    # rubocop:disable TrivialAccessors
     def render
       @internal
     end
-    # rubocop:enable TrivialAccessors
 
     private
 
@@ -71,13 +70,13 @@ module MagicCloud
     end
 
     def _measure_text(draw, text, rotate)
-      metrics = draw.get_type_metrics('"' + validate_text(text) + 'm"')
+      metrics = draw.get_type_metrics(%("#{validate_text(text)}m"))
       w, h = rotated_metrics(metrics.width, metrics.height, rotate)
 
       Rect.new(0, 0, w, h)
     end
 
-    def rotated_metrics(w, h, degrees)
+    def rotated_metrics(w, h, degrees) # rubocop:todo Metrics/AbcSize
       radians = degrees * Math::PI / 180
 
       # FIXME: not too clear, just straightforward from d3.cloud
@@ -95,8 +94,9 @@ module MagicCloud
     end
 
     def validate_text(text)
-      return text +=" " if text[-1] == "%"
-      return text
+      return text +=' ' if text[-1] == '%'
+
+      text
     end
   end
 end
